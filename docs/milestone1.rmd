@@ -12,8 +12,12 @@ output:
 
 
 ```{r setup, include=FALSE}
-library("tidyverse")
+
 knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+if (!requireNamespace("corrplot")) install.packages("corrplot")
+library(corrplot)
+
 
 ```
 
@@ -24,6 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 The wildfire in Australia is truly a tragedy. Every possible means should be taken to prevent and properly control such a painful disaster. Thanks to the cutting-edge observatory tools from NASA, we can access to [a detailed dataset] (https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) which provides a screenshot in the temporal development of this event. An analysis of the actual data and visualizing them can serve as a means to set up strategies for extinguishing and preventing a widespread fire like this. 
 
 ### Data description
+  
 The [dataset we are using](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) was obtained from Kaggle, uploaded by Carlos Paradis. The raw data from observation of the wildfire by two NASA Satellite Instruments were contained in the dataset. Out of the four .csv files they provided, we are limiting our scope to 'fire_archive_M6_96619.csv' only because it is the most reliable file with raw observatory data corrected by other data sources.
 
 In this file, each row represents an observation of fire in Australia and New Zealand. Columns are for geographic information (latitude and longitude), the fire intensity (brightness, bright_t31, frp), specifications of the observation satellite instrument (scan, track, satellite, instrument, version), quality/confidence of the observation (confidence) details on the observation time (acq_date, acq_time) and other factors (daylight).
@@ -59,11 +64,50 @@ knitr::kable(data_frame) %>% kable_styling(bootstrap_options = "condensed", full
 
 
 ### Exploring the Dataset
+
+#### Load the dataset
+
+First we read in the dataset from the folder '\data' in our repository.
 ```{r}
-# First we read in the dataset from the folder '\data' in our repository.
-df <- read_csv("../data/fire_archive_M6_96619.csv")
+## Load the dataset
+wildfire_data <- read_csv("../data/fire_archive_M6_96619.csv")
+
+## Drop the non-numeric variable colums
+wildfire_correlations <-
+  wildfire_data %>%
+    select(-acq_date, -acq_time, -satellite, -instrument, -daynight, -type, -version)
 ```
 
+#### Correllogram
+From the correllogram below, we could see that there are some correlation between brightness and frp, scan and track. The color scheme in correllogram shows all positive correlations as blue, and all negative correlations as red. 
+
+```{r corrplot}
+# Convert the numeric colums to 'double' type
+wildfire_correlations[1:8] <- sapply(wildfire_correlations[1:8], as.double)
+wildfire_correlations <- cor(wildfire_correlations[1:8])
+
+wildfire_correlations <- round(wildfire_correlations,2)
+corrplot(wildfire_correlations, 
+         type="upper", 
+         method="color", 
+         tl.srt=45,
+         addCoef.col = "blue",
+         diag = FALSE)
+```
+
+#### Geometric with longitue and latitude
+From the geom_point map below, we could get a visual concept about the overall fire locations according to brightness and radiation power. The larger point on frp means higher fire rediation power, and a lighter point color, indicates a higher brightness of the fire.
+
+```{r}
+Map_data <- wildfire_data %>%
+  select(latitude, longitude, frp, brightness) 
+
+
+ggplot() + 
+  geom_point(data=Map_data,aes(x=longitude,y=latitude, size = frp, color=brightness)) 
+
+```
+  
 
 ### Research Question
 
