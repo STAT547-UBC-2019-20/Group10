@@ -9,9 +9,7 @@ output:
 # bibliography: ../doc/asd_refs.bib
 ---
 
-
 ```{r setup, include=FALSE}
-
 
 knitr::opts_chunk$set(echo = TRUE)
 library("tidyverse")
@@ -29,7 +27,7 @@ The wildfire in Australia is truly a tragedy. Every possible means should be tak
 
 ### Data description
   
-The [dataset we are using](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) was obtained from Kaggle, uploaded by Carlos Paradis. The raw data from observation of the wildfire by two NASA Satellite Instruments were contained in the dataset. Out of the four .csv files they provided, we are limiting our scope to 'fire_archive_M6_96619.csv' only because it is the most reliable file with raw observatory data corrected by other data sources.
+The [dataset](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) we are using was obtained from Kaggle, uploaded by Carlos Paradis. The raw data from observation of the wildfire by two NASA Satellite Instruments were contained in the dataset. Out of the four .csv files they provided, we are limiting our scope to 'fire_archive_M6_96619.csv' only because it is the most reliable file with raw observatory data corrected by other data sources.
 
 In this file, each row represents an observation of fire in Australia and New Zealand. Columns are for geographic information (latitude and longitude), the fire intensity (brightness, bright_t31, frp), specifications of the observation satellite instrument (scan, track, satellite, instrument, version), quality/confidence of the observation (confidence) details on the observation time (acq_date, acq_time) and other factors (daylight).
 
@@ -67,7 +65,7 @@ knitr::kable(data_frame) %>% kable_styling(bootstrap_options = "condensed", full
 
 #### Load the dataset
 
-First we read in the dataset from the folder '\data' in our repository.
+The dataset is uploaded to folder “/data” in our repository. 
 ```{r}
 ## Load the dataset
 wildfire_data <- read_csv("../data/fire_archive_M6_96619.csv")
@@ -76,6 +74,7 @@ wildfire_data <- read_csv("../data/fire_archive_M6_96619.csv")
 wildfire_correlations <-
   wildfire_data %>%
     select(-acq_date, -acq_time, -satellite, -instrument, -daynight, -type, -version)
+
 ```
 
 #### Correllogram
@@ -111,11 +110,13 @@ ggplot() +
 
 ### Research Question
 
-In this project, we will seek to determine the relationship between a factor (day/night) and the intensity (brightness/bright_t31 and frp) of the wildfire, using the logistic regression.
+In this project, we will seek to determine the relationship between a factor (day/night) and the intensity (brightness/bright_t31 and frp) of the wildfire, using the logistic regression, along a timeline.
 
 ### Plan of Action
 
-With our research question, we are only interested in the fire intensity and the day/night. We will ignore the other variables for the purposes of this analysis. After data wrangling, we will perform a logistic regression analysis because of the nature of the factor (not numeric) and plot the relevant results. 
+With our research question, we are only interested in the fire intensity and the day/night. We will ignore the other non-numeric variables for the purposes of this analysis. After data wrangling, we will perform a logistic regression analysis because of the nature of the factor (not numeric) and plot the relevant results. 
 We will also draw a map in terms of timeline and geographic location for the brightness of the fire. 
 
 ### References
+
+The dataset is provided by NASA Satellite instrument. The one we analysis above is MODIS C6 Archived table from [Fire from Space: Australia](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) in Kaggle
