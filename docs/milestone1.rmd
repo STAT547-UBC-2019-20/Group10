@@ -13,6 +13,10 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+if (!requireNamespace("corrplot")) install.packages("corrplot")
+library(corrplot)
+
 ```
 
 ## Wildfire in Australia and New Zealand
@@ -22,8 +26,52 @@ knitr::opts_chunk$set(echo = TRUE)
 Current news about the wildfire in Australia is truly a tragedy. However, thanks to the cutting-edge observatory tools from NASA, we can access to [the detailed dataset] (https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) related the development of this fire. An analysis of the actual data and visualizing them can serve as a way for setting up strategies for extinguishing the fire. 
 
 ### Data description
+The [dataset](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) used in this analysis is provided by NASA.  
+
 
 ### Exploring the Dataset
+#### Load the dataset
+
+```{r}
+## Load the dataset
+wildfire_data <- read_csv("../data/fire_archive_M6_96619.csv")
+
+## Drop the non-numeric variable colums
+wildfire_correlations <-
+  wildfire_data %>%
+    select(-acq_date, -acq_time, -satellite, -instrument, -daynight, -type, -version)
+```
+
+#### Correllogram
+From the correllogram below, we could see that there are some correlation between brightness and frp, scan and track. The color scheme in correllogram shows all positive correlations as blue, and all negative correlations as red. 
+
+```{r corrplot}
+# Convert the numeric colums to 'double' type
+wildfire_correlations[1:8] <- sapply(wildfire_correlations[1:8], as.double)
+wildfire_correlations <- cor(wildfire_correlations[1:8])
+
+wildfire_correlations <- round(wildfire_correlations,2)
+corrplot(wildfire_correlations, 
+         type="upper", 
+         method="color", 
+         tl.srt=45,
+         addCoef.col = "blue",
+         diag = FALSE)
+```
+
+#### Geometric with longitue and latitude
+From the geom_point map below, we could get a visual concept about the overall fire locations according to brightness and radiation power. The larger point on frp means higher fire rediation power, and a lighter point color, indicates a higher brightness of the fire.
+
+```{r}
+Map_data <- wildfire_data %>%
+  select(latitude, longitude, frp, brightness) 
+
+
+ggplot() + 
+  geom_point(data=Map_data,aes(x=longitude,y=latitude, size = frp, color=brightness)) 
+
+```
+  
 
 ### Research Question
 
