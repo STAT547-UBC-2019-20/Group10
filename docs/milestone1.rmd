@@ -12,21 +12,66 @@ output:
 
 
 ```{r setup, include=FALSE}
+library("tidyverse")
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 ## Wildfire in Australia and New Zealand
 
 ### Introduction
 
-Current news about the wildfire in Australia is truly a tragedy. However, thanks to the cutting-edge observatory tools from NASA, we can access to [the detailed dataset] (https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) related the development of this fire. An analysis of the actual data and visualizing them can serve as a way for setting up strategies for extinguishing the fire. 
+The wildfire in Australia is truly a tragedy. Every possible means should be taken to prevent and properly control such a painful disaster. Thanks to the cutting-edge observatory tools from NASA, we can access to [a detailed dataset] (https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) which provides a screenshot in the temporal development of this event. An analysis of the actual data and visualizing them can serve as a means to set up strategies for extinguishing and preventing a widespread fire like this. 
 
 ### Data description
+The [dataset we are using](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) was obtained from Kaggle, uploaded by Carlos Paradis. The raw data from observation of the wildfire by two NASA Satellite Instruments were contained in the dataset. Out of the four .csv files they provided, we are limiting our scope to 'fire_archive_M6_96619.csv' only because it is the most reliable file with raw observatory data corrected by other data sources.
+
+In this file, each row represents an observation of fire in Australia and New Zealand. Columns are for geographic information (latitude and longitude), the fire intensity (brightness, bright_t31, frp), specifications of the observation satellite instrument (scan, track, satellite, instrument, version), quality/confidence of the observation (confidence) details on the observation time (acq_date, acq_time) and other factors (daylight).
+
+Below is the entire variable set:
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(kableExtra)
+object <- {
+  "| Variable          | Type             | Description                                                                                                                            |
+|----------------------|------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| latitude             | Int         | The latitude value of the centre of 1km fire pixel. Not necessarily the exact location of the fire. The latitude is between -42.76 and -10.07, which covers Australia and New Zealand only. This variable will be used to represent fire on a map.                                     |
+| longitude             | Int         | The longitude value of the centre of 1km fire pixel. Not necessarily the exact location of the fire. The longitude is between 114.1 and 153.5, which covers Australia and New Zealand only. This variable will be used to represent fire on a map.                                                |
+| brightness            | Int         | Channel 21/22 brightness temperature of the fire pixel measured in Kelvin. This value represents the intensity of the fire.                                                  |
+| scan           | Int        | (Along Scan pixel size) Related to the specification of the satellite observation. |
+| track             | Int        | (Along Track pixel size) Related to the specification of the satellite observation. |
+| acq_date             | Date        | Acquisition Date: Date of MODIS acquisition, between Aug. 1 and Sep. 30, 2019.|
+| acq_time             | String        | Time of acquisition/overpass of the satellite (in UTC).|
+| satellite             | String        | The name of the satellite that provided the raw observation data. Aqua and Terra in our case. |
+| intrument             | String        | Constant value. MODIS only                                   |
+| confidence            | Int (0-100)        | This value is based on a collection of intermediate algorithm quantities used in the detection process. It is intended to gauge the quality of individual observation. Confidence estimates range between 0 and 100 in percentage. This variable will be used as a threshold for datapoints in actual analyses: only those observations with 90 or higher confidence values will be analyzed.|
+| version                  | Int              | This value identifies the collection (e.g. MODIS Collection 6) and source of data processing. 6.3 only in our case.|
+| bright_t31               | Int           | Brightness temperature 31 (Kelvin): Channel 31 brightness temperature of the fire pixel measured in Kelvin.|
+| frp            | Int           | Fire Radiative Power: Depicts the pixel-integrated fire radiative power in MW (megawatts).|
+| daynight  | String (D, N)  | D = Daytime, N = Nighttime|
+| type | String           | Type of observation. A specific description of the value type is unknown from the data provider.
+"
+}
+data_frame <- read_delim(object, delim = '|')
+data_frame <- data_frame %>% select(-X5, -X1) %>% slice(-1)
+knitr::kable(data_frame) %>% kable_styling(bootstrap_options = "condensed", full_width = F, fixed_thead = TRUE)
+```
+
 
 ### Exploring the Dataset
+```{r}
+# First we read in the dataset from the folder '\data' in our repository.
+df <- read_csv("../data/fire_archive_M6_96619.csv")
+```
+
 
 ### Research Question
 
+In this project, we will seek to determine the relationship between a factor (day/night) and the intensity (brightness/bright_t31 and frp) of the wildfire, using the logistic regression.
+
 ### Plan of Action
+
+With our research question, we are only interested in the fire intensity and the day/night. We will ignore the other variables for the purposes of this analysis. After data wrangling, we will perform a logistic regression analysis because of the nature of the factor (not numeric) and plot the relevant results. 
+We will also draw a map in terms of timeline and geographic location for the brightness of the fire. 
 
 ### References
