@@ -1,0 +1,32 @@
+---
+title: "Wildfire in Australia and New Zealand"
+author: "Monica Li and Stanley Nam"
+always_allow_html: true
+output: 
+  html_document:
+    keep_md: yes
+    toc: true
+# bibliography: ../doc/asd_refs.bib
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Wildfire in Australia and New Zealand
+
+### Introduction
+
+Current news about the wildfire in Australia is truly a tragedy. However, thanks to the cutting-edge observatory tools from NASA, we can access to [the detailed dataset] (https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) related the development of this fire. An analysis of the actual data and visualizing them can serve as a way for setting up strategies for extinguishing the fire. 
+
+### Data description
+
+### Exploring the Dataset
+
+### Research Question
+
+### Plan of Action
+
+### References
