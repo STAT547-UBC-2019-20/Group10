@@ -167,13 +167,15 @@ corrplot(wildfire_correlations,
          method="color", 
          tl.srt=45,
          addCoef.col = "blue",
-         diag = FALSE)
+         diag = FALSE，
+         title="Correllogram for the numeric columns in wildfire dataset",
+         mar=c(0,0,2,0)) 
 ```
 
 ![](milestone1_files/figure-html/corrplot-1.png)<!-- -->
 
 #### Geometric with longitue and latitude
-From the geom_point map below, we could get a visual concept about the overall fire locations according to brightness and radiation power. The larger point on frp means higher fire rediation power, and a lighter point color, indicates a higher brightness of the fire.
+From the scatter plot map below, we could get a visual concept about the overall fire locations according to brightness and rediation power. The larger point on frp means higher fire rediation power, and a lighter point color, indicates a higher brightness of the fire.
 
 
 ```r
@@ -182,7 +184,11 @@ Map_data <- wildfire_data %>%
 
 
 ggplot() + 
-  geom_point(data=Map_data,aes(x=longitude,y=latitude, size = frp, color=brightness)) 
+  geom_point(data=Map_data,aes(x=longitude,y=latitude, size = frp, color=brightness), alpha = 0.5) +
+  xlab ("Longitude, degree(East as positive)") +
+  ylab ("Latitude, degree(North as positive)") +
+  ggtitle('Brightness and Radiation Power vs. Geometric info') +
+  theme(plot.title = element_text(hjust = 0.5, size = 14), legend.title = element_text(size=12))
 ```
 
 ![](milestone1_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
