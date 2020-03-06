@@ -26,7 +26,9 @@ main <- function(rmd_path) {
 knit_report <- function(rmd_path) {
   render (
     input=rmd_path, 
-    output_format=c("html_document", "pdf_document")
+    output_format=c("html_document", "pdf_document"),
+    output_file = c("final_report","final_report"),
+    output_dir = "."
   )
 }
 
