@@ -6,8 +6,11 @@
 Usage: clean_data.R --path_raw=<path_raw> --path_result=<path_result>
 " -> doc
 
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse)) # "shut up, tidyverse"
 library(docopt)
+
+options(readr.num_columns = 0)
+
 
 opt <- docopt(doc)
 
@@ -15,8 +18,8 @@ main <- function(path_raw, path_result){
   checked_pathes <- path_check(path_raw, path_result)
   path_raw <- checked_pathes[1]
   path_result <- checked_pathes[2]
-  print(path_raw)
-  print(path_result)
+  print(paste0("Raw data path: ", path_raw))
+  print(paste0("Clean data path: ", path_result))
   cleaned_data <- remove_columns(path_raw)
   
   save_clean_data(cleaned_data, path_result)
@@ -54,34 +57,27 @@ path_check <- function(path_raw, path_result){
     return(pathes)
 }
 
-#' sanity check on pathes before loading / saving a file.
-#' 1. if the user simply gave a filename without any folder name specified, assume that the user refers to a file under
-#' 'data' folder, and change the variable accordingly.
-#' 2. overwriting on the raw data file is unbearable. so if the raw data path and result data path are the same, 
-#' add '_cleaned' suffix to the result path.
-#' 3. if the specified raw data file does not exist, raise error.
-#' @param path_raw is a string. the path to the raw data. only a file name or a full path expected
-#' @param path_result is a string. the destination path where the result should be saved. only a file name or a full path expected
+#' removes unused columns
+#' this function removes following columns: acq_date, acq_time, satellite, instrument, daynight, type, version
+#' @param path_raw is a string. the path to the raw data. This parameter is internally sanitized.
 #' @examples
-#' path_check('abc.csv', 'efg.csv')
+#' remove_columns(path_raw)
 #' path_check('C:/Users/STAT547/data/abc.csv', 'C:/Users/STAT547/data/efg.csv')
 remove_columns <- function(path_raw){
-  return()
+  raw_csv <- read_csv(path_raw)
+  return_tibble <- raw_csv %>%
+    select(-acq_date, -acq_time, -satellite, -instrument, -daynight, -type, -version)
+  return(return_tibble)
 }
 
-#' sanity check on pathes before loading / saving a file.
-#' 1. if the user simply gave a filename without any folder name specified, assume that the user refers to a file under
-#' 'data' folder, and change the variable accordingly.
-#' 2. overwriting on the raw data file is unbearable. so if the raw data path and result data path are the same, 
-#' add '_cleaned' suffix to the result path.
-#' 3. if the specified raw data file does not exist, raise error.
-#' @param path_raw is a string. the path to the raw data. only a file name or a full path expected
-#' @param path_result is a string. the destination path where the result should be saved. only a file name or a full path expected
+#' saves cleaned data to the designated path and prints a message so that the user knows all are good :)
+#' @param cleaned_data the cleaned data, passed by remove_columns()
+#' @param path_result is a string. the destination path where the result should be saved. sanity checked by path_check()
 #' @examples
-#' path_check('abc.csv', 'efg.csv')
-#' path_check('C:/Users/STAT547/data/abc.csv', 'C:/Users/STAT547/data/efg.csv')
+#' path_check(cleaned_data, path_result)
 save_clean_data <- function(cleaned_data, path_result){
-  return()
+  write_csv(cleaned_data, path_result)
+  print(paste0("Successful! Unused columns removed. Cleaned data is saved as ", path_result))
 }
 
 main(opt$path_raw, opt$path_result)
