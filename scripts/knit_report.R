@@ -14,7 +14,7 @@ opt <- docopt(doc)
 main <- function(rmd_path) {
   message(paste0("Knit the report from: ", rmd_path))
   knit_report(rmd_path)
-  message(paste0("Successful! Report in html and pdf has been generated!"))
+  message(paste0("Successful! Report in html and pdf has been generated and saved in the root of repo!"))
 }
 
 
