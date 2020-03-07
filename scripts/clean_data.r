@@ -11,18 +11,19 @@ library(docopt)
 
 options(readr.num_columns = 0)
 
-
 opt <- docopt(doc)
 
 main <- function(path_raw, path_result){
-  checked_pathes <- path_check(path_raw, path_result)
+  checked_pathes <- path_check(path_raw, path_result) # check and validate two pathes
   path_raw <- checked_pathes[1]
   path_result <- checked_pathes[2]
-  print(paste0("Raw data path: ", path_raw))
-  print(paste0("Clean data path: ", path_result))
-  cleaned_data <- remove_columns(path_raw)
   
-  save_clean_data(cleaned_data, path_result)
+  print(paste0("Raw data path: ", path_raw))          # printout the final pathes
+  print(paste0("Clean data path: ", path_result))
+  
+  cleaned_data <- remove_columns(path_raw)            # remove columns 
+  
+  save_clean_data(cleaned_data, path_result)          # save the result of the preprocessing
 }
 
 #' sanity check on pathes before loading / saving a file.
@@ -36,13 +37,24 @@ main <- function(path_raw, path_result){
 #' @examples
 #' path_check('abc.csv', 'efg.csv')
 #' path_check('C:/Users/STAT547/data/abc.csv', 'C:/Users/STAT547/data/efg.csv')
+#' path_check('data/abc.csv', 'data/efg.csv')
 path_check <- function(path_raw, path_result){
   pathes <- c(path_raw, path_result)
+  pathes <- gsub("\\\\","/", pathes)
   
   for (i in 1:length(pathes)){
-    if (!grepl("\\\\|/", pathes[i])){
-  }
-    pathes[i] <- paste0(here::here("data"), "/", pathes[i])
+    path <- pathes[i]
+    if (!grepl("/", path)){
+      pathes[i] <- paste0(here::here("data"), "/", path)
+    } else if (grepl("data/", path)){
+      sep_path <- unlist(strsplit(path, "/"))
+      clean_path <- paste0(sep_path[grep("data",sep_path):length(sep_path)], collapse = "/")
+      pathes[i] <- here::here(clean_path)
+    } else {
+      if (!file.exists(path)){
+        pathes[i] <- here::here(path)
+      }
+    }
   }
   
   if (pathes[1] == pathes[2]){
@@ -50,7 +62,7 @@ path_check <- function(path_raw, path_result){
     ext <- ".csv"
     pathes[2] <- paste0(no_ext,"_cleaned",ext)
   }
-  
+  print(pathes)
   if(!file.exists(pathes[1])){
     stop("There is no raw file by the path you entered. Please try again.")
   }
