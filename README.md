@@ -23,7 +23,7 @@ Here are the links for each milestone
     
   
     \# Wrangle/clean/process your data 
-    > Rscript scripts/clean_data.R --path_raw=<path_raw> --path_result=<path_result>
+    > Rscript scripts/clean_data.r --path_raw=<path_raw> --path_result=<path_result>
     
   
     \# EDA script to export images
@@ -34,7 +34,7 @@ Here are the links for each milestone
     > Rscript scripts/knit_report.R --rmd_path=<rmd_path>
     
     
-    \# For example:
+    \# To replicate this analysis, clone this repository, navigate to the src folder in your terminal, and type in the following commands:
     > Rscript scripts/load_data.r --data_url='https://github.com/STAT547-UBC-2019-20/data_sets/raw/master/fire_archive_M6_96619.csv'
     >
     > Rscript scripts/clean_data.r --path_raw='data/fire_archive_M6_96619.csv' --path_result='data/cleaned_data.csv'
