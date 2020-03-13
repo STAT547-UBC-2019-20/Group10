@@ -91,7 +91,7 @@ corrplot(wildfire_correlations,
          method="color", 
          tl.srt=45,
          addCoef.col = "blue",
-         diag = FALSE，
+         diag = FALSE,
          title="Correllogram for the numeric columns in wildfire dataset",
          mar=c(0,0,2,0)) 
 

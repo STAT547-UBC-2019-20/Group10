@@ -1,0 +1,28 @@
+---
+title: "Wildfire in Australia and New Zealand"
+author: "Monica Li and Stanley Nam"
+date: "05/03/2020"
+output: 
+  html_document:
+    keep_md: yes
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Introduction
+
+## Exploring the dataset
+ 
+## Methods
+TBD in next week for linear regression
+
+## Result 
+TBD in next week for linear regression
+
+## Discussion and conclusion 
+TBD in next week for linear regression
+
