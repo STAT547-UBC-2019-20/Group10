@@ -9,6 +9,7 @@ Usage: analysis.R --data_path=<data_path>
 library(docopt)
 library(dplyr)
 library(effects)
+library(ggplot2)
 
 opt <- docopt(doc)
 
@@ -25,12 +26,23 @@ main <- function (data_path) {
 #' analysis ('data/fire_archive_M6_96619.csv')
 analysis <- function(data_path){
   raw <- read.csv(data_path, header = T)
-  model <- glm(brightness ~ scan + track + daynight, data = raw, family = "binomial")
-  model_n <- glm(brightness ~ scn + track, data = raw, family = "binomial")
+  model <- lm(brightness ~ scan + track + daynight, data = raw)
+  model_n <- lm(brightness ~ scan + track, data = raw)
   signific <- anova(model_n, model, test ="Chisq")
-  plots <- plot(allEffects(model_HLA))
-  png(here::here("images","effectSize.png"))
-  saveRDS(model, model_n, signific, file = here::here("models.rds"))
+  save(model, model_n, signific, file = here::here("RDS", "models.rda"))
+  
+  png(here::here("images","scan-daynight.png"))
+  ggplot(data = raw, aes(x=scan, y=brightness, colour=daynight))+geom_smooth(method="lm")
+  dev.off()
+  
+  png(here::here("images","track-daynight.png"))
+  ggplot(data = raw, aes(x=track, y=brightness, colour=daynight))+geom_smooth(method="lm")
+  dev.off()
+  
+  png(here::here("images","effectSizes.png"))
+  plot(allEffects(model))
+  dev.off()
+  
 }
 
 main(opt$data_path)
