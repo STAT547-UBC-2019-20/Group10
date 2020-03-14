@@ -32,10 +32,10 @@ analysis <- function(data_path){
   save(model, model_n, signific, file = here::here("models.rda"))
   
   ggplot(data = raw, aes(x=scan, y=brightness, colour=daynight))+geom_smooth(method="lm")+
-    ggsave('images/scan-daynight.png', width = 8, height = 5)
+    ggsave('images/scan-daynight.png')
 
   ggplot(data = raw, aes(x=track, y=brightness, colour=daynight))+geom_smooth(method="lm") +
-    ggsave('images/track-daynight.png', width = 8, height = 5)
+    ggsave('images/track-daynight.png')
   
   png(here::here("images","effectSizes.png"))
   plot(allEffects(model))

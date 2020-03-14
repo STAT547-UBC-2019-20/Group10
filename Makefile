@@ -1,7 +1,7 @@
 #Author: Xuemeng Li and Stanley Nam
 #Date: March 13, 2020
 
-.PHONY: all clean
+.PHONY: all clean tests
 
 all: finalReport.html finalReport.pdf
 
@@ -20,7 +20,11 @@ images/correllgram.png images/geogram.png : data/cleaned_data.csv scripts/plot_g
 # logistic regression 
 images/effectSize.png images/scan-daynight.png images/track-daynight.png models.rda : data/fire_archive_M6_96619.csv
 	Rscript scripts/analysis.R --data_path="data/fire_archive_M6_96619.csv"
-
+	
+# testthat
+tests : tests/tests.R
+	Rscript tests/tests.R
+	
 # knit report
 finalReport.html finalReport.pdf : images/correllgram.png images/geogram.png images/effectSize.png images/scan-daynight.png images/track-daynight.png models.rda docs/finalReport.Rmd scripts/knit_report.R
 	Rscript scripts/knit_report.R --rmd_path="docs/finalReport.Rmd"
