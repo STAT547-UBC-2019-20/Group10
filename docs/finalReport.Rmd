@@ -7,7 +7,8 @@ output:
     toc: true
   pdf_document:
     toc: true
-      
+bibliography: "refs.bib"
+
 ---
 
 ```{r setup, include=FALSE}
@@ -16,11 +17,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-The wildfire in Australia is truly a tragedy. Every possible means should be taken to prevent and properly control such a painful disaster. Thanks to the cutting-edge observatory tools from NASA, we can access to [a detailed dataset] (https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) which provides a screenshot in the temporal development of this event. An analysis of the actual data and visualizing them can serve as a means to set up strategies for extinguishing and preventing a widespread fire like this.
+The wildfire in Australia is truly a tragedy. Every possible means should be taken to prevent and properly control such a painful disaster. Thanks to the cutting-edge observatory tools from NASA, we can access [a detailed dataset](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) [@dataset] which provides a screenshot in the temporal development of this event. An analysis of the actual data and visualizing them can serve as a means to set up strategies for extinguishing and preventing a widespread fire like this. 
+
+This study analyses the satellite data from NASA to understand the influence of atmospheric factors on the intensity of a fire. Fire intensity, best represented by the core temperature, is a decisive factor in an efficient extinguishing plan. [@Stephen1996] The fire can be controlled more quickly if the core temperature is lower. Therefore, it is proper to devote limited resources to the time when the fire has a lower temperature. Among the factors that can influence the fire intensity exists atmosphere, but to the best of our knowledge, no prior research has investigated the influence of atmospheric factors in the Australian 'bushfire.' For this reason, the current research will analyze atmospheric factors represented as a categorical variable of day/night in our dataset.
 
 ## Exploring the dataset
  
-The [dataset](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) we are using was obtained from Kaggle, uploaded by Carlos Paradis. The raw data from observation of the wildfire by two NASA Satellite Instruments were contained in the dataset. Out of the four .csv files they provided, we are limiting our scope to 'fire_archive_M6_96619.csv' only because it is the most reliable file with raw observatory data corrected by other data sources.
+The [dataset](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland) we are using [@dataset] was obtained from Kaggle, uploaded by Carlos Paradis. The raw data from observation of the wildfire by two NASA Satellite Instruments were contained in the dataset. Out of the four .csv files they provided, we are limiting our scope to 'fire_archive_M6_96619.csv' only because it is the most reliable file with raw observatory data corrected by other data sources.
 
 In this file, each row represents an observation of fire in Australia and New Zealand. Columns are for geographic information (latitude and longitude), the fire intensity (brightness, bright_t31, frp), specifications of the observation satellite instrument (scan, track, satellite, instrument, version), quality/confidence of the observation (confidence) details on the observation time (acq_date, acq_time) and other factors (daylight).
 
@@ -33,17 +36,41 @@ From the correllogram below, we could see that there are some correlation betwee
 ![Correllogram](../images/correllgram.png)
 </center>
 
-### Geometric with longitue and latitude
+### Geometric with longitude and latitude
 From the scatter plot map below, we could get a visual concept about the overall fire locations according to brightness and rediation power. The larger point on frp means higher fire rediation power, and a lighter point color, indicates a higher brightness of the fire.
 
 ![GeoGram](../images/geogram.png)
 
 ## Methods
-TBD in next week for linear regression
+As mentioned in the introduction, the objective of our research is to understand the influence of the different atmospheric conditions between day and night on the intensity of wildfire. As for the dependent variable for the intensity of a fire, there are three in the satellite observation data: 'frp', 'brightness' and 'bright_t31.' Among these variables, we select 'brightness' because there is a high correlation between 'frp' and 'brightness' and 'brightness' and 'bright_t31' as we see in the correlogram.
 
-## Result 
-TBD in next week for linear regression
+We ran a multiple linear regression analysis to understand whether the atmospheric difference between day and night (variable 'day/night') influences the intensity of wildfire (variable 'brightness'). We include two additional variables, 'scan' and 'track' which are expected to act randomly. These are variables that represent the specifications of the observation satellite instrument, so not necessarily related to the intensity. If the regression model with 'scan', 'track' and 'day/night' fits better than the model without 'day/night', namely including only two dummy variables, we can conclude that 'day/night' is a significant factor that decides the intensity of a fire.
+
+```{r load_data, echo=F}
+obsData <- read.csv(here::here("data","fire_archive_M6_96619.csv"), header = T)
+```
+
+As shown in the code chunk below, our `model` contained variable 'day/night' in addition to two dummy factors, and the null model (`model_n`) did not. These two models were compared.
+
+```{r analysis}
+model <- lm(brightness ~ scan + track + daynight, data = obsData)
+model_n <- lm(brightness ~ scan + track, data = obsData)
+signific <- anova(model_n, model, test ="Chisq")
+```
+
+## Results
+
+- present summary of `model`
+- present `signific`
+- show three plots
+![scan-daynight](../images/scan-daynight.png)
+![track-daynight](../images/track-daynight.png)
+![allEffects](../images/effectSizes.png)
+
 
 ## Discussion and conclusion 
-TBD in next week for linear regression
+According to the finding described in the Results, the atmospheric differences between daytime and night have a statistically significant effect on the intensity of a fire. As widely known, extinguishing the fire when the core temperature is lower is effective. Besides, the risk that personnel directly involved in the extinguishing tactics would strikingly decrease if the temperature is lower.
 
+Our study suggests that in the limited resources, extinguishing strategy with a more active concentration in the night time can be more effective.
+
+## References
