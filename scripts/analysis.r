@@ -29,7 +29,7 @@ analysis <- function(data_path){
   model <- lm(brightness ~ scan + track + daynight, data = raw)
   model_n <- lm(brightness ~ scan + track, data = raw)
   signific <- anova(model_n, model, test ="Chisq")
-  save(model, model_n, signific, file = here::here("RDS", "models.rda"))
+  save(model, model_n, signific, file = here::here("models.rda"))
   
   png(here::here("images","scan-daynight.png"))
   ggplot(data = raw, aes(x=scan, y=brightness, colour=daynight))+geom_smooth(method="lm")
