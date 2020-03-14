@@ -22,7 +22,7 @@ images/effectSize.png images/scan-daynight.png images/track-daynight.png models.
 	Rscript scripts/analysis.R --data_path="data/fire_archive_M6_96619.csv"
 
 # knit report
-finalReport.html finalReport.pdf : images/correllgram.png images/geogram.png docs/finalReport.Rmd scripts/knit_report.R
+finalReport.html finalReport.pdf : images/correllgram.png images/geogram.png images/effectSize.png images/scan-daynight.png images/track-daynight.png models.rda docs/finalReport.Rmd scripts/knit_report.R
 	Rscript scripts/knit_report.R --rmd_path="docs/finalReport.Rmd"
 	
 clean:

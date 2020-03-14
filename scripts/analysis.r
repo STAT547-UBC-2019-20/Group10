@@ -31,13 +31,11 @@ analysis <- function(data_path){
   signific <- anova(model_n, model, test ="Chisq")
   save(model, model_n, signific, file = here::here("models.rda"))
   
-  png(here::here("images","scan-daynight.png"))
-  ggplot(data = raw, aes(x=scan, y=brightness, colour=daynight))+geom_smooth(method="lm")
-  dev.off()
-  
-  png(here::here("images","track-daynight.png"))
-  ggplot(data = raw, aes(x=track, y=brightness, colour=daynight))+geom_smooth(method="lm")
-  dev.off()
+  ggplot(data = raw, aes(x=scan, y=brightness, colour=daynight))+geom_smooth(method="lm")+
+    ggsave('images/scan-daynight.png', width = 8, height = 5)
+
+  ggplot(data = raw, aes(x=track, y=brightness, colour=daynight))+geom_smooth(method="lm") +
+    ggsave('images/track-daynight.png', width = 8, height = 5)
   
   png(here::here("images","effectSizes.png"))
   plot(allEffects(model))
