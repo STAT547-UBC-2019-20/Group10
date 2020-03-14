@@ -3,12 +3,11 @@ title: "Wildfire in Australia and New Zealand"
 author: "Monica Li and Stanley Nam"
 date: "05/03/2020"
 output: 
-  html_document:
-    toc: true
   pdf_document:
     toc: true
+  html_document:
+    toc: true
 bibliography: "refs.bib"
-
 ---
 
 ```{r setup, include=FALSE}
@@ -104,14 +103,15 @@ signific
 ### Effect sizes
 The two graphs presented below show the effect sizes of 'scan' and 'track'. What is important from them is the fact that the variables show significant gaps by daytime (in scarlet) and night time (in tortoise).
 
-![](../images/scan-daynight.png)
+![Scan vs. Daynight](../images/scan-daynight.png)
 
-![](../images/track-daynight.png)
+![Track vs. Daynight ](../images/track-daynight.png)
 
 Finally, the three subgraphs below show individual effect size. We can find that the effect of day/night is greater and clear (narrower whisker) than the other two variables.
 
-![](../images/effectSizes.png)
-
+<center>
+![Individual effect size](../images/effectSizes.png){center}
+</center>
 
 ## Discussion and conclusion 
 According to the finding described in the Results, the atmospheric differences between daytime and night have a statistically significant effect on the intensity of a fire. Assuming that the atmospheric temperature decreases after the sunset, this may influence the core temperature of a fire as well. As widely known, extinguishing the fire when the core temperature is lower is more effective and successful. Besides, the risk that personnel directly involved in the extinguishing tactics would strikingly decrease if the temperature is lower.
