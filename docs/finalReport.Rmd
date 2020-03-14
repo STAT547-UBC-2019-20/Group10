@@ -13,6 +13,8 @@ bibliography: "refs.bib"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(broom)
 ```
 
 ## Introduction
@@ -48,6 +50,7 @@ We ran a multiple linear regression analysis to understand whether the atmospher
 
 ```{r load_data, echo=F}
 obsData <- read.csv(here::here("data","fire_archive_M6_96619.csv"), header = T)
+load(here::here("models.rda"))
 ```
 
 As shown in the code chunk below, our `model` contained variable 'day/night' in addition to two dummy factors, and the null model (`model_n`) did not. These two models were compared.
@@ -60,16 +63,58 @@ signific <- anova(model_n, model, test ="Chisq")
 
 ## Results
 
-- present summary of `model`
-- present `signific`
-- show three plots
-![scan-daynight](../images/scan-daynight.png)
-![track-daynight](../images/track-daynight.png)
-![allEffects](../images/effectSizes.png)
+### Significance of the variable 'day/night'
+
+Track and daynight variables in `model` were significant as shown below. 
+
+```{r analysis_model}
+tidy_model <- broom::tidy(model)
+tidy_model
+```
+
+An increase in the value of 'track' lowers the temperature by `r tidy_model[3,2]`. The variable 'day/night', on the other hand disproportionally changes the temperature by `r tidy_model[4,2]`, meaning that the observed fire temperature during the daytime is higher than that during night time by `r tidy_model[4,2]`.
+
+However, we cannot decide whether 'day/night' is significant or not by looking into this result alone. Therefore, we introduced a benchmark, namely another model `model_n`.
+
+```{r analysis_n}
+tidy_model_n <- broom::tidy(model_n)
+tidy_model_n
+```
+
+As reported above, 'scan' and 'track' were only two variables that explain 'brightness' in this model and 'track' is still significant with the p-value of `r tidy_model_n[3,5]`. 
+
+```{r compare_glance}
+glance_model <- broom::glance(model) %>%
+  add_column(model = "model", .before = 1)
+glance_model_n <- broom::glance(model_n) %>%
+  add_column(model = "benchmark model", .before = 1)
+
+model_comp <- bind_rows(glance_model, glance_model_n)
+model_comp
+```
+
+As we can see from the comparison between two models above, the adjusted coefficient of determination (adjusted R-squared) value increases from `r model_comp[2,2]` to `r model_comp[1,2]`, meaning that having another predictor 'day/night' increase the fittedness of the model.
+
+Another support for having the 'day/night' predictor comes from the anova chi-square test.
+
+```{r anova chi-square}
+signific
+```
+
+### Effect sizes
+The two graphs presented below show the effect sizes of 'scan' and 'track'. What is important from them is the fact that the variables show significant gaps by daytime (in scarlet) and night time (in tortoise).
+
+![](../images/scan-daynight.png)
+
+![](../images/track-daynight.png)
+
+Finally, the three subgraphs below show individual effect size. We can find that the effect of day/night is greater and clear (narrower whisker) than the other two variables.
+
+![](../images/effectSizes.png)
 
 
 ## Discussion and conclusion 
-According to the finding described in the Results, the atmospheric differences between daytime and night have a statistically significant effect on the intensity of a fire. As widely known, extinguishing the fire when the core temperature is lower is effective. Besides, the risk that personnel directly involved in the extinguishing tactics would strikingly decrease if the temperature is lower.
+According to the finding described in the Results, the atmospheric differences between daytime and night have a statistically significant effect on the intensity of a fire. Assuming that the atmospheric temperature decreases after the sunset, this may influence the core temperature of a fire as well. As widely known, extinguishing the fire when the core temperature is lower is more effective and successful. Besides, the risk that personnel directly involved in the extinguishing tactics would strikingly decrease if the temperature is lower.
 
 Our study suggests that in the limited resources, extinguishing strategy with a more active concentration in the night time can be more effective.
 
