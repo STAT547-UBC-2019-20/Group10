@@ -3,8 +3,8 @@ This GitHub repository is for all group activities done by *Monica Li* and *Stan
 
 Here are the links for each milestone
 * [Milestone 1](https://stat547-ubc-2019-20.github.io/Group10/docs/milestone1.html)
-* [Final Report (Milestone 2)](https://stat547-ubc-2019-20.github.io/Group10/final_report.html)
-* [Final Report (Milestone 2).pdf](https://stat547-ubc-2019-20.github.io/Group10/final_report.pdf)
+* [Final Report](https://stat547-ubc-2019-20.github.io/Group10/final_report.html)
+* [Final Report.pdf](https://stat547-ubc-2019-20.github.io/Group10/final_report.pdf)
 
 ## Usage
 
