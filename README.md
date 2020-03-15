@@ -21,25 +21,33 @@ Here are the links for each milestone
     - corrplot
 
 3. Run the following scripts (in order) with the appropriate arguments specified  
-    - scripts/load_data.R   # Download data
-    - scripts/clean_data.R  # Wrangle/clean/process your data 
-    - scripts/plot_grams.R  # EDA script to export images 
-    - scripts/analysis.R    # logistic regressions
-    - scripts/knit_report.R # Knit the draft report
-    - tests/test.R          # Test with testthat, check the required inputs are all generated for kniting the report
+    - scripts/load_data.R   
+    - scripts/clean_data.R  
+    - scripts/plot_grams.R  
+    - scripts/analysis.R   
+    - scripts/knit_report.R 
+    - tests/test.R          
     
     To replicate this analysis, navigate to the root folder of this project in your terminal, and type in the following commands:
-    > Rscript scripts/load_data.R --data_url='https://github.com/STAT547-UBC-2019-20/data_sets/raw/master/fire_archive_M6_96619.csv'
-    >
-    > Rscript scripts/clean_data.R --path_raw='data/fire_archive_M6_96619.csv' --path_result='data/cleaned_data.csv'
-    >
-    > Rscript scripts/plot_grams.R --data_path='data/cleaned_data.csv'
-    >
-    > Rscript scripts/analysis.R --data_path='data/fire_archive_M6_96619.csv'
-    >
-    > Rscript scripts/knit_report.R --rmd_path='docs/finalReport.Rmd'
-    >
-    > Rscript tests/tests.R
+    ```r
+    # Download data
+    Rscript scripts/load_data.R --data_url='https://github.com/STAT547-UBC-2019-20/data_sets/raw/master/fire_archive_M6_96619.csv'
+    
+    # Wrangle/clean/process your data 
+    Rscript scripts/clean_data.R --path_raw='data/fire_archive_M6_96619.csv' --path_result='data/cleaned_data.csv'
+    
+    # EDA script to analyse the data and export images 
+    Rscript scripts/plot_grams.R --data_path='data/cleaned_data.csv'
+    
+    # Logistic regressions
+    Rscript scripts/analysis.R --data_path='data/fire_archive_M6_96619.csv'
+    
+    # Knit the final report
+    Rscript scripts/knit_report.R --rmd_path='docs/finalReport.Rmd'
+    
+    # Test with testthat, checking the required inputs are all generated for kniting the report
+    Rscript tests/tests.R
+    ```
     
 ### Usage instructions for GNU MAKE
 A makefile has been created for this project, to use the makefile, please clone the repository, navigate to the root folder of this project in your terminal, and type in the following commands:
