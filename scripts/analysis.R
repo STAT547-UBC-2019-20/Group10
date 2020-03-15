@@ -10,6 +10,7 @@ library(docopt)
 library(dplyr)
 library(effects)
 library(ggplot2)
+library(testthat)
 
 opt <- docopt(doc)
 
@@ -26,16 +27,26 @@ main <- function (data_path) {
 #' analysis ('data/fire_archive_M6_96619.csv')
 analysis <- function(data_path){
   raw <- read.csv(data_path, header = T)
+  
+  # test if all the columns needed for analysis exist.
+  test_that("Testing that required variables are in the data file", {
+    expect_that(all(c("brightness", "scan", "track", "daynight") %in% colnames(raw)), is_true())
+  })
+  
   model <- lm(brightness ~ scan + track + daynight, data = raw)
   model_n <- lm(brightness ~ scan + track, data = raw)
   signific <- anova(model_n, model, test ="Chisq")
   save(model, model_n, signific, file = here::here("models.rda"))
   
   ggplot(data = raw, aes(x=scan, y=brightness, colour=daynight))+geom_smooth(method="lm")+
+    ggtitle('The linear model of scan and brightness by day/night') +
+    theme(plot.title = element_text(hjust = 0.5, size = 14), legend.title = element_text(size=12))+
     ggsave('images/scan-daynight.png')
-
+  
   ggplot(data = raw, aes(x=track, y=brightness, colour=daynight))+geom_smooth(method="lm") +
-    ggsave('images/track-daynight.png')
+    ggtitle('The linear model of track and brightness by day/night') +
+    theme(plot.title = element_text(hjust = 0.5, size = 14), legend.title = element_text(size=12))+
+    ggsave('images/scan-daynight.png')
   
   png(here::here("images","effectSizes.png"))
   plot(allEffects(model))
