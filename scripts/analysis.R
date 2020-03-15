@@ -46,7 +46,7 @@ analysis <- function(data_path){
   ggplot(data = raw, aes(x=track, y=brightness, colour=daynight))+geom_smooth(method="lm") +
     ggtitle('The linear model of track and brightness by day/night') +
     theme(plot.title = element_text(hjust = 0.5, size = 14), legend.title = element_text(size=12))+
-    ggsave('images/scan-daynight.png')
+    ggsave('images/track-daynight.png')
   
   png(here::here("images","effectSizes.png"))
   plot(allEffects(model))

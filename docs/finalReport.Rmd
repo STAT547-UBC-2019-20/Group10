@@ -7,6 +7,7 @@ output:
     toc: true
   html_document:
     toc: true
+header-includes: \usepackage{float}
 bibliography: "refs.bib"
 ---
 
@@ -33,14 +34,17 @@ In the next subsections, we explored the dataset with plotting Correllogram and 
 ### Correllogram
 From the correllogram below, we could see that there are some correlation between brightness and frp, scan and track. The color scheme in correllogram shows all positive correlations as blue, and all negative correlations as red.
 
-<center>
-![Correllogram](../images/correllgram.png)
-</center>
+
+```{r, out.width="50%", fig.align='center', fig.cap='Correllogram for the wildfire data', echo = FALSE, fig.pos="H"}
+knitr::include_graphics('../images/correllgram.png')
+```
 
 ### Geometric with longitude and latitude
 From the scatter plot map below, we could get a visual concept about the overall fire locations according to brightness and rediation power. The larger point on frp means higher fire rediation power, and a lighter point color, indicates a higher brightness of the fire.
 
-![GeoGram](../images/geogram.png)
+```{r, out.width="70%", fig.align='center', fig.cap='Geometric graph for the wildfire data', echo = FALSE, fig.pos="H"}
+knitr::include_graphics('../images/geogram.png')
+```
 
 ## Methods
 As mentioned in the introduction, the objective of our research is to understand the influence of the different atmospheric conditions between day and night on the intensity of wildfire. As for the dependent variable for the intensity of a fire, there are three in the satellite observation data: 'frp', 'brightness' and 'bright_t31.' Among these variables, we select 'brightness' because there is a high correlation between 'frp' and 'brightness' and 'brightness' and 'bright_t31' as we see in the correlogram.
@@ -103,15 +107,20 @@ signific
 ### Effect sizes
 The two graphs presented below show the effect sizes of 'scan' and 'track'. What is important from them is the fact that the variables show significant gaps by daytime (in scarlet) and night time (in tortoise).
 
-![Scan vs. Daynight](../images/scan-daynight.png)
+```{r, out.width="50%", fig.align='center', fig.cap='Scan vs. Brightness', echo = FALSE, fig.pos="H"}
+knitr::include_graphics('../images/scan-daynight.png')
+```
 
-![Track vs. Daynight ](../images/track-daynight.png)
+```{r, out.width="50%", fig.align='center', fig.cap='Track vs. Brightness', echo = FALSE, fig.pos="H"}
+knitr::include_graphics('../images/track-daynight.png')
+```
 
 Finally, the three subgraphs below show individual effect size. We can find that the effect of day/night is greater and clear (narrower whisker) than the other two variables.
 
-<center>
-![Individual effect size](../images/effectSizes.png){center}
-</center>
+```{r, out.width="50%", fig.align='center', fig.cap='Individual effect size', echo = FALSE, fig.pos="H"}
+knitr::include_graphics('../images/effectSizes.png')
+```
+
 
 ## Discussion and conclusion 
 According to the finding described in the Results, the atmospheric differences between daytime and night have a statistically significant effect on the intensity of a fire. Assuming that the atmospheric temperature decreases after the sunset, this may influence the core temperature of a fire as well. As widely known, extinguishing the fire when the core temperature is lower is more effective and successful. Besides, the risk that personnel directly involved in the extinguishing tactics would strikingly decrease if the temperature is lower.
