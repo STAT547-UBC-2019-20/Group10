@@ -19,6 +19,7 @@ Here are the links for each milestone
     - docopt
     - testthat
     - corrplot
+    - effects
 
 3. Run the following scripts (in order) with the appropriate arguments specified  
     - scripts/load_data.R   
