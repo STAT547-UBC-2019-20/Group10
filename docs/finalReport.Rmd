@@ -56,13 +56,7 @@ obsData <- read.csv(here::here("data","fire_archive_M6_96619.csv"), header = T)
 load(here::here("data", "models.rda"))
 ```
 
-As shown in the code chunk below, our `model` contained variable 'day/night' in addition to two dummy factors, and the null model (`model_n`) did not. These two models were compared.
-
-```{r analysis}
-model <- lm(brightness ~ scan + track + daynight, data = obsData)
-model_n <- lm(brightness ~ scan + track, data = obsData)
-signific <- anova(model_n, model, test ="Chisq")
-```
+Our `model` contained variable 'day/night' in addition to two dummy factors: `model <- lm(brightness ~ scan + track + daynight, data = obsData)`. The null model (`model_n`) did not: `model_n <- lm(brightness ~ scan + track, data = obsData)`. These two models were compared the anova chi-square test: `signific <- anova(model_n, model, test ="Chisq")`.
 
 ## Results
 
@@ -103,6 +97,8 @@ Another support for having the 'day/night' predictor comes from the anova chi-sq
 ```{r anova chi-square}
 signific
 ```
+
+As shown in the result reported above, the p-value for comparing the model with the 'day/night' predictor against the one without it is `r unlist(signific[5])[2]` (rounded up), which entails that this factor is highly significant in explaining the dependent variable (i.e., intensity of fire).
 
 ### Effect sizes
 The two graphs presented below show the effect sizes of 'scan' and 'track'. What is important from them is the fact that the variables show significant gaps by daytime (in scarlet) and night time (in tortoise).
