@@ -12,6 +12,6 @@ testthat::test_that("All required files through the pipeline are generated",{
   expect_equal(file.exists(here::here("images", "track-daynight.png")), TRUE)
   expect_equal(file.exists(here::here("data", "cleaned_data.csv")), TRUE)
   expect_equal(file.exists(here::here("data", "fire_archive_M6_96619.csv")), TRUE)
-  expect_equal(file.exists(here::here("models.rda")), TRUE)
+  expect_equal(file.exists(here::here("data", "models.rda")), TRUE)
 }
 )

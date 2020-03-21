@@ -53,7 +53,7 @@ We ran a multiple linear regression analysis to understand whether the atmospher
 
 ```{r load_data, echo=F}
 obsData <- read.csv(here::here("data","fire_archive_M6_96619.csv"), header = T)
-load(here::here("models.rda"))
+load(here::here("data", "models.rda"))
 ```
 
 As shown in the code chunk below, our `model` contained variable 'day/night' in addition to two dummy factors, and the null model (`model_n`) did not. These two models were compared.

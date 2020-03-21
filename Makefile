@@ -3,7 +3,7 @@
 
 .PHONY: all clean tests
 
-all: finalReport.html finalReport.pdf
+all: docs/finalReport.html docs/finalReport.pdf
 
 # download data
 data/fire_archive_M6_96619.csv : scripts/load_data.R
@@ -18,7 +18,7 @@ images/correllgram.png images/geogram.png : data/cleaned_data.csv scripts/plot_g
 	Rscript scripts/plot_grams.R --data_path="data/cleaned_data.csv"
 
 # logistic regression 
-images/effectSize.png images/scan-daynight.png images/track-daynight.png models.rda : data/fire_archive_M6_96619.csv
+images/effectSize.png images/scan-daynight.png images/track-daynight.png data/models.rda : data/fire_archive_M6_96619.csv
 	Rscript scripts/analysis.R --data_path="data/fire_archive_M6_96619.csv"
 	
 # testthat
@@ -26,7 +26,7 @@ tests : tests/tests.R
 	Rscript tests/tests.R
 	
 # knit report
-finalReport.html finalReport.pdf : images/correllgram.png images/geogram.png images/effectSize.png images/scan-daynight.png images/track-daynight.png models.rda docs/finalReport.Rmd scripts/knit_report.R
+docs/finalReport.html docs/finalReport.pdf : images/correllgram.png images/geogram.png images/effectSize.png images/scan-daynight.png images/track-daynight.png data/models.rda docs/finalReport.Rmd scripts/knit_report.R
 	Rscript scripts/knit_report.R --rmd_path="docs/finalReport.Rmd"
 	
 clean:

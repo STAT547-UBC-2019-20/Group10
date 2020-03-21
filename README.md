@@ -4,8 +4,8 @@ This GitHub repository is for all group activities done by *Monica Li* and *Stan
 Here are the links for each milestone
 * [Milestone 1](https://stat547-ubc-2019-20.github.io/Group10/docs/milestone1.html)
 
-* [Final Report](https://stat547-ubc-2019-20.github.io/Group10/finalReport.html)
-* [Final Report.pdf](https://stat547-ubc-2019-20.github.io/Group10/finalReport.pdf)
+* [Final Report](https://stat547-ubc-2019-20.github.io/Group10/docs/finalReport.html)
+* [Final Report.pdf](https://stat547-ubc-2019-20.github.io/Group10/docs/finalReport.pdf)
 
 
 ## Usage
@@ -66,9 +66,9 @@ A makefile has been created for this project, to use the makefile, please clone 
     >
     > make images/correllgram.png images/geogram.png
     >
-    > make images/effectSize.png images/scan-daynight.png images/track-daynight.png models.rda
+    > make images/effectSize.png images/scan-daynight.png images/track-daynight.png data/models.rda
     >
-    > make finalReport.html finalReport.pdf
+    > make docs/finalReport.html docs/finalReport.pdf
     >
     > make tests
   
