@@ -3,7 +3,7 @@ This GitHub repository is for all group activities done by *Monica Li* and *Stan
 
 Here are the links for each milestone
 * [Milestone 1](https://stat547-ubc-2019-20.github.io/Group10/docs/milestone1.html)
-
+* [Milestone 2](https://stat547-ubc-2019-20.github.io/Group10/docs/milestone2.html)
 * [Final Report](https://stat547-ubc-2019-20.github.io/Group10/docs/finalReport.html)
 * [Final Report.pdf](https://stat547-ubc-2019-20.github.io/Group10/docs/finalReport.pdf)
 
@@ -11,25 +11,16 @@ Here are the links for each milestone
 ## Usage
 
 ### Usage instructions for running scripts individually
-1. Clone this repo
-
-2. Ensure the following packages are installed:
+    
+    To replicate this analysis, clone this repo and navigate to the root folder of this project in your terminal, ensure the following packages are installed:
     - ggplot2
     - tidyverse
     - docopt
     - testthat
     - corrplot
     - effects
-
-3. Run the following scripts (in order) with the appropriate arguments specified  
-    - scripts/load_data.R   
-    - scripts/clean_data.R  
-    - scripts/plot_grams.R  
-    - scripts/analysis.R   
-    - scripts/knit_report.R 
-    - tests/test.R          
     
-    To replicate this analysis, navigate to the root folder of this project in your terminal, and type in the following commands:
+    and then type in the following commands:
    
     > #### # Download data
     > Rscript scripts/load_data.R --data_url='https://github.com/STAT547-UBC-2019-20/data_sets/raw/master/fire_archive_M6_96619.csv'
