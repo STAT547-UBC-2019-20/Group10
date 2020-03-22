@@ -1,5 +1,3 @@
-# Your solution here
-
 # Author: Xuemeng Li
 # Date: March 21, 2020
 
@@ -38,7 +36,7 @@ app$layout(
         ),
         value = "Day"
       ),
-      htmlImg(src = "https://disasterphilanthropy.org/wp-content/uploads/2019/11/Map-of-Australia-Fires_Dec-62019-e1575686810851.png")
+      htmlImg(src = "https://github.com/STAT547-UBC-2019-20/Group10/raw/master/images/geogram.png")
     )
   )
 )
