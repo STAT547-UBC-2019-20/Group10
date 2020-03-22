@@ -75,7 +75,9 @@ Jessica is a decision-maker at Fire and Rescue Services, interested in a way to 
 When Jessica logs in the app, she will easily compare how the scope of fires changes between two dates by specifying each date on the slider. She can also compare the day and night by changing day or night from the dropdown menu. If she moves on to the ‘analysis view’ by selecting it on the radio button, she will see graphs from regression analyses. Jessica may notice that “fire temperature is significantly lower during the night”, and thus make a decision that fire-fighting power should be focused on night time if an event of widespread wildfire happens in her area.
 
 ### Dashboard sketch
-
+The following sketch shows the visual design of the app and the interative feature:
+[map](images/Group 10-Wildfire Australia-Map.png)
+[Analysis](images/Group 10-Wildfire Australia-Analysis.png)
 
 ## Acknowledgements
 
