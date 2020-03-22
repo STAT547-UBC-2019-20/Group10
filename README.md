@@ -12,14 +12,14 @@ Here are the links for each milestone
 
 ### Usage instructions for running scripts individually
     
-    To replicate this analysis, clone this repo and navigate to the root folder of this project in your terminal, ensure the following packages are installed:
-    - ggplot2
-    - tidyverse
-    - docopt
-    - testthat
-    - corrplot
-    - effects
-    
+To replicate this analysis, clone this repo and navigate to the root folder of this project in your terminal, ensure the following packages are installed:
+- ggplot2
+- tidyverse
+- docopt
+- testthat
+- corrplot
+- effects
+
     and then type in the following commands:
    
     > #### # Download data
