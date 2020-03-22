@@ -76,8 +76,10 @@ When Jessica logs in the app, she will easily compare how the scope of fires cha
 
 ### Dashboard sketch
 The following sketch shows the visual design of the app and the interative feature:
-[map](images/Group 10-Wildfire Australia-Map.png)
-[Analysis](images/Group 10-Wildfire Australia-Analysis.png)
+
+![map](images/Group10-Wildfire Australia-Map.png)
+
+![Analysis](images/Group10-Wildfire Australia-Analysis.png)
 
 ## Acknowledgements
 
