@@ -20,7 +20,7 @@ To replicate this analysis, clone this repo and navigate to the root folder of t
 - corrplot
 - effects
 
-    and then type in the following commands:
+and then type in the following commands:
    
     > #### # Download data
     > Rscript scripts/load_data.R --data_url='https://github.com/STAT547-UBC-2019-20/data_sets/raw/master/fire_archive_M6_96619.csv'
