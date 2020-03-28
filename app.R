@@ -87,7 +87,7 @@ app$callback(
   output(id = 'lm-graph', property = 'figure'),
   params = list(input(id = 'lm_variable', property = 'value'),
                 input(id = 'lm_int', property = 'value')),
-  function(){
+  function(predictor, intensity){
     lmPlot(predictor, intensity)
   }
 )
