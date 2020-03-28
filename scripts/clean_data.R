@@ -71,13 +71,14 @@ path_check <- function(path_raw, path_result){
 
 #' removes unused columns
 #' this function removes following columns: acq_date, acq_time, satellite, instrument, daynight, type, version
+#' however, the value of daynight column gets re-coded as a new column named 'is_day'
 #' @param path_raw is a string. the path to the raw data. This parameter is internally sanitized.
 #' @examples
 #' remove_columns(path_raw)
-#' path_check('C:/Users/STAT547/data/abc.csv', 'C:/Users/STAT547/data/efg.csv')
 remove_columns <- function(path_raw){
   raw_csv <- read_csv(path_raw)
   return_tibble <- raw_csv %>%
+    mutate(is_day = factor(ifelse(daynight == "D", 1, 0))) %>%
     select(-acq_date, -acq_time, -satellite, -instrument, -daynight, -type, -version)
   return(return_tibble)
 }

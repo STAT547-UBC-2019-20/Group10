@@ -7,7 +7,7 @@ Usage: analysis.R --data_path=<data_path>
 " -> doc
 
 library(docopt)
-library(dplyr)
+library(tidyverse)
 library(effects)
 library(ggplot2)
 library(testthat)
@@ -26,27 +26,32 @@ main <- function (data_path) {
 #' @examples
 #' analysis ('data/fire_archive_M6_96619.csv')
 analysis <- function(data_path){
-  raw <- read.csv(data_path, header = T)
+  cleanData <- read_csv(data_path) %>% mutate(is_day = factor(is_day))
   
   # test if all the columns needed for analysis exist.
   test_that("Testing that required variables are in the data file", {
-    expect_that(all(c("brightness", "scan", "track", "daynight") %in% colnames(raw)), is_true())
+    expect_that(all(c("brightness", "scan", "track", "is_day") %in% colnames(cleanData)), is_true())
   })
   
-  model <- lm(brightness ~ scan + track + daynight, data = raw)
-  model_n <- lm(brightness ~ scan + track, data = raw)
+  model <- lm(brightness ~ scan + track + is_day, data = cleanData)
+  model_n <- lm(brightness ~ scan + track, data = cleanData)
   signific <- anova(model_n, model, test ="Chisq")
   save(model, model_n, signific, file = here::here("data", "models.rda"))
   
-  ggplot(data = raw, aes(x=scan, y=brightness, colour=daynight))+geom_smooth(method="lm")+
+  ggplot(data = cleanData, aes(x=scan, y=brightness, colour=is_day)) + 
+    geom_smooth(method="lm") +
     ggtitle('The linear model of scan and brightness by day/night') +
-    theme(plot.title = element_text(hjust = 0.5, size = 14), legend.title = element_text(size=12))+
-    ggsave('images/scan-daynight.png')
+    theme(plot.title = element_text(hjust = 0.5, size = 16), 
+          axis.title=element_text(size=15),
+          legend.title = element_text(size=15)) +
+    ggsave('images/scan-daynight.png', height=6, width=6)
   
-  ggplot(data = raw, aes(x=track, y=brightness, colour=daynight))+geom_smooth(method="lm") +
+  ggplot(data = cleanData, aes(x=track, y=brightness, colour=is_day))+geom_smooth(method="lm") +
     ggtitle('The linear model of track and brightness by day/night') +
-    theme(plot.title = element_text(hjust = 0.5, size = 14), legend.title = element_text(size=12))+
-    ggsave('images/track-daynight.png')
+    theme(plot.title = element_text(hjust = 0.5, size = 16), 
+          axis.title=element_text(size=15),
+          legend.title = element_text(size=15)) +
+    ggsave('images/track-daynight.png', height=6, width=6)
   
   png(here::here("images","effectSizes.png"))
   plot(allEffects(model))

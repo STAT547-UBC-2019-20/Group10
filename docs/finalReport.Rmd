@@ -1,7 +1,7 @@
 ---
 title: "Wildfire in Australia and New Zealand"
 author: "Monica Li and Stanley Nam"
-date: "05/03/2020"
+date: "`r format(Sys.time(), '%d/%m/%Y')`"
 output: 
   pdf_document:
     toc: true
@@ -64,7 +64,7 @@ Our `model` contained variable 'day/night' in addition to two dummy factors: `mo
 
 Track and daynight variables in `model` were significant as shown below. 
 
-```{r analysis_model}
+```{r analysis_model, echo=FALSE}
 tidy_model <- broom::tidy(model)
 tidy_model
 ```
@@ -73,14 +73,16 @@ An increase in the value of 'track' lowers the temperature by `r tidy_model[3,2]
 
 However, we cannot decide whether 'day/night' is significant or not by looking into this result alone. Therefore, we introduced a benchmark, namely another model `model_n`.
 
-```{r analysis_n}
+```{r analysis_n, echo=FALSE}
 tidy_model_n <- broom::tidy(model_n)
 tidy_model_n
 ```
 
 As reported above, 'scan' and 'track' were only two variables that explain 'brightness' in this model and 'track' is still significant with the p-value of `r tidy_model_n[3,5]`. 
 
-```{r compare_glance}
+Now let us compare the model against the benchmark.
+
+```{r compare_glance, echo=FALSE}
 glance_model <- broom::glance(model) %>%
   add_column(model = "model", .before = 1)
 glance_model_n <- broom::glance(model_n) %>%
@@ -94,7 +96,7 @@ As we can see from the comparison between two models above, the adjusted coeffic
 
 Another support for having the 'day/night' predictor comes from the anova chi-square test.
 
-```{r anova chi-square}
+```{r anova chi-square, echo=FALSE}
 signific
 ```
 
