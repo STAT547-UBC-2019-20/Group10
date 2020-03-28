@@ -13,7 +13,8 @@ library(dashHtmlComponents)
 suppressPackageStartupMessages(library(plotly))
 suppressPackageStartupMessages(library(tidyverse))
 
-## Functions 
+## Functions and Tabs
+source(here::here("scripts", "dash_analysisTab.R"))
 
 ## Assign components to variables
 heading_title <- htmlH1('Austrilia Wildfire Analysis')
@@ -75,10 +76,20 @@ app$callback(
                  style=list( "max-width" = "80%", height = "auto", "margin-left" = "auto", "margin-right" = "auto", display = "block"))
        )))}
      else if(tab == 'tab-2'){
-       return(htmlDiv(list(
-         htmlH3('Tab content 2')
-       )))}
+       return(htmlDiv(
+         tab_analysis
+       ))}
    }
+)
+
+# Update analysis graphs
+app$callback(
+  output(id = 'lm-graph', property = 'figure'),
+  params = list(input(id = 'lm_variable', property = 'value'),
+                input(id = 'lm_int', property = 'value')),
+  function(){
+    lmPlot(predictor, intensity)
+  }
 )
 
 # 4. Run app
