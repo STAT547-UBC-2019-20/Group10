@@ -9,7 +9,6 @@ Usage: analysis.R --data_path=<data_path>
 library(docopt)
 library(tidyverse)
 library(effects)
-library(ggplot2)
 library(testthat)
 
 opt <- docopt(doc)
