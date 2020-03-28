@@ -18,8 +18,8 @@ images/correllgram.png images/geogram.png : data/cleaned_data.csv scripts/plot_g
 	Rscript scripts/plot_grams.R --data_path="data/cleaned_data.csv"
 
 # logistic regression 
-images/effectSize.png images/scan-daynight.png images/track-daynight.png data/models.rda : data/fire_archive_M6_96619.csv
-	Rscript scripts/analysis.R --data_path="data/fire_archive_M6_96619.csv"
+images/effectSize.png images/scan-daynight.png images/track-daynight.png data/models.rda : data/cleaned_data.csv
+	Rscript scripts/analysis.R --data_path="data/cleaned_data.csv"
 	
 # testthat
 tests : tests/tests.R
