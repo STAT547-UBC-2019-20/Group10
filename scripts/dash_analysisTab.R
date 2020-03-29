@@ -99,7 +99,8 @@ analysis_maindiv <- htmlDiv(
        effSize_graph
   ),
   style = list('padding' = 10,
-               'flex-basis' = '80%')
+               'flex-basis' = '80%',
+               'justify-content' = 'center')
 )
 
 # Assign the whole part as a htmlDiv. This one is to be called when tab2 is clicked in app.R

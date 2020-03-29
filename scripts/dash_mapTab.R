@@ -63,7 +63,7 @@ slider <- dccSlider(
 ## sidebar
 map_sidebar <- htmlDiv(
   list(
-    htmlLabel('Select data by date or all:'),
+    htmlLabel('Select by date or all:'),
     dropdown_list
   ),
   style = list('padding' = 10,
@@ -81,7 +81,8 @@ map_maindiv <- htmlDiv(
     slider
   ),
   style = list('padding' = 10,
-             'flex-basis' = '80%')
+             'flex-basis' = '80%',
+             'justify-content' = 'center')
 )
 
 tab_map <- htmlDiv(
