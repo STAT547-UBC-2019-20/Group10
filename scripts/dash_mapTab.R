@@ -60,10 +60,18 @@ slider <- dccSlider(
   value = 1
 )
 
+map_markdown <- dccMarkdown(
+  "Here is the wildfire condition upon the location.
+  
+  Date could be selected through the slider below the map. To see the fire condition over all time, select 'All' in the dropdown list on the left. 
+  
+  "
+)
+
 ## sidebar
 map_sidebar <- htmlDiv(
   list(
-    htmlLabel('Select by date or all:'),
+    htmlH3('Select by date or all:'),
     dropdown_list
   ),
   style = list('padding' = 10,
@@ -75,8 +83,9 @@ map_maindiv <- htmlDiv(
   id = 'map_maindiv',
   list(
     # Show the map by date by default
-    htmlH3('Fire over time'),
-    htmlLabel(id = 'slider_label'),
+    htmlH2('Fire on each day on map'),
+    map_markdown,
+    htmlH4(id = 'slider_label'),
     graph,
     slider
   ),

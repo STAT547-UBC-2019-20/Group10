@@ -101,8 +101,9 @@ app$callback(
     if (dropdown_value == '1'){
       return(htmlDiv(
         list(
-          htmlH3('Fire over time'),
-          htmlLabel(id = 'slider_label'),
+          htmlH2('Fire on each day on map'),
+          map_markdown,
+          htmlH4(id = 'slider_label'),
           graph,
           slider
         ))
@@ -110,7 +111,7 @@ app$callback(
     } else if (dropdown_value == '2'){
       return(htmlDiv(
         list(
-          htmlH3('Fire over all time'),
+          htmlH2('Fire over all time'),
           htmlImg(src = "https://github.com/STAT547-UBC-2019-20/Group10/raw/master/images/geogram.png",
                  style=list( "max-width" = "80%", height = "auto", "margin-left" = "auto", "margin-right" = "auto", display = "block"))
         )
