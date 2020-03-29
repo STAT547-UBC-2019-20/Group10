@@ -29,18 +29,19 @@ make_plot <- function(input_date = first_date){
   
 }
 
+# Dash Components
+dropdown_list <- dccDropdown(
+  id = 'map_dropdown',
+  options=list(
+    list(label = "By_Date", value = '1'),
+    list(label = "All", value = '2')
+  ),
+  value = '1'
+)
+
 graph <- dccGraph(
   id = 'map_graph_by_date',
   figure = make_plot()
-)
-# Dash Components
-
-dropdown_list <- dccDropdown(
-  options=list(
-    list(label = "Day", value = "1"),
-    list(label = "Night", value = "2")
-  ),
-  value = "Day"
 )
 
 slider <- dccSlider(
@@ -59,17 +60,34 @@ slider <- dccSlider(
   value = 1
 )
 
-
-
-tab_map <- htmlDiv(
+## sidebar
+map_sidebar <- htmlDiv(
   list(
+    htmlLabel('Select data by date or all:'),
+    dropdown_list
+  ),
+  style = list('padding' = 10,
+               'flex-basis' = '20%')
+)
+
+## main div
+map_maindiv <- htmlDiv(
+  id = 'map_maindiv',
+  list(
+    # Show the map by date by default
     htmlH3('Fire over time'),
     htmlLabel(id = 'slider_label'),
     graph,
-    slider,
-    htmlH3('Fire all the time'),
-    htmlImg(src = "https://github.com/STAT547-UBC-2019-20/Group10/raw/master/images/geogram.png", 
-            style=list( "max-width" = "80%", height = "auto", "margin-left" = "auto", "margin-right" = "auto", display = "block"))
-    
-  )
+    slider
+  ),
+  style = list('padding' = 10,
+             'flex-basis' = '80%')
+)
+
+tab_map <- htmlDiv(
+  list(
+    map_sidebar,
+    map_maindiv
+  ),
+  style = list('display' = 'flex')
 )

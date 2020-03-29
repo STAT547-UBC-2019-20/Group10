@@ -74,17 +74,8 @@ app$callback(
    }
 )
 
-# Update analysis graphs
-app$callback(
-  output(id = 'lm-graph', property = 'figure'),
-  params = list(input(id = 'lm_variable', property = 'value'),
-                input(id = 'lm_int', property = 'value')),
-  function(predictor, intensity){
-    lmPlot(predictor, intensity)
-  }
-)
 
-# Update the slider for map
+# Update the slider for map and date
 app$callback(
   output(id = 'slider_label', property = 'children'),
   params = list(input(id = 'map_slider', property = 'value')),
@@ -99,6 +90,42 @@ app$callback(
   function(input_date){
     select_date <- date_data %>% slice(input_date)
     make_plot(select_date)
+  }
+)
+
+# Updte the map between all and sliding
+app$callback(
+  output(id = 'map_maindiv', property = 'children'),
+  params = list(input(id = 'map_dropdown', property = 'value')),
+  function (dropdown_value) {
+    if (dropdown_value == '1'){
+      return(htmlDiv(
+        list(
+          htmlH3('Fire over time'),
+          htmlLabel(id = 'slider_label'),
+          graph,
+          slider
+        ))
+      )
+    } else if (dropdown_value == '2'){
+      return(htmlDiv(
+        list(
+          htmlH3('Fire over all time'),
+          htmlImg(src = "https://github.com/STAT547-UBC-2019-20/Group10/raw/master/images/geogram.png",
+                 style=list( "max-width" = "80%", height = "auto", "margin-left" = "auto", "margin-right" = "auto", display = "block"))
+        )
+      ))
+    }
+  }
+)
+
+# Update analysis graphs
+app$callback(
+  output(id = 'lm-graph', property = 'figure'),
+  params = list(input(id = 'lm_variable', property = 'value'),
+                input(id = 'lm_int', property = 'value')),
+  function(predictor, intensity){
+    lmPlot(predictor, intensity)
   }
 )
 
