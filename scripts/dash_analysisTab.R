@@ -33,26 +33,36 @@ effPlot <- function(predictor = "all", intensity = "brightness"){
   
   dfEffModel <- as.data.frame(allEffects(effmodel))
   
-  if (predictor != "all") {
-    dfEffModel <- dfEffModel[[predictor]]
-  }
-  
-  plots <- lapply(dfEffModel, function(df) {
+  if (predictor == "all") {
+    plots <- lapply(dfEffModel, function(df) {
+      if (nrow(df) == 2) { # nrow == 2 then categorical predictor
+        g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2], ymin = "lower", ymax = "upper")) +
+          geom_point() +
+          geom_errorbar()
+        ggplotly(g)
+        } else {
+        g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2])) +
+          geom_line() +
+          geom_ribbon(aes(ymin = lower, ymax = upper), alpha = .1)
+        ggplotly(g)
+        }
+    })
+    subplot(plots)
+    } else { 
+    df <- dfEffModel[[predictor]]
     if (nrow(df) == 2) { # nrow == 2 then categorical predictor
       g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2], ymin = "lower", ymax = "upper")) +
         geom_point() +
         geom_errorbar()
       ggplotly(g)
-    } else {
+    } 
+    else {
       g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2])) +
         geom_line() +
         geom_ribbon(aes(ymin = lower, ymax = upper), alpha = .1)
       ggplotly(g)
-      
     }
-    })
-  
-  subplot(plots)
+  }
 }
 
 # create dropdowns
