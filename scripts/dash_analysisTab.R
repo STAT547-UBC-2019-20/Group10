@@ -29,13 +29,17 @@ effectsizegraph <- function(df, intensity){
     g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2], ymin = "lower", ymax = "upper")) +
       geom_point() +
       geom_errorbar() +
-      labs(title = paste0("The effect size of Day/Night on ", intensity), y = intensity)
+      labs(title = paste0("The effect size of Day/Night on ", intensity), y = intensity) +
+      theme(plot.title = element_text(hjust = 0.5, size = 16), 
+            axis.title=element_text(size=15))
   } 
   else {
     g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2])) +
       geom_line() +
       geom_ribbon(aes(ymin = lower, ymax = upper), alpha = .1) +
-      labs(title = paste0("The effect size of ", colnames(df)[1]," on ", intensity), y = intensity)
+      labs(title = paste0("The effect size of ", colnames(df)[1]," on ", intensity), y = intensity) +
+      theme(plot.title = element_text(hjust = 0.5, size = 16), 
+            axis.title=element_text(size=15))
     
   }
   return(g)
@@ -107,7 +111,7 @@ eff_intensityDropdown <- dccDropdown(
 )
 
 
-# assign graph components to variables
+# assign graph amd markdown components to variables
 lm_graph <- dccGraph(
   id = 'lm-graph',
   figure = lmPlot()
@@ -118,19 +122,38 @@ effSize_graph<- dccGraph(
   figure = effPlot()
 )
 
+lmMarkdown <- dccMarkdown("
+## Linear regression model
+
+Here, you can run linear regression analyses. 
+
+The result will be shown as plots below.
+
+To set various parameter for an analysis, please select independent and dependent variable on the left-hand side dropdown boxes.
+")
+
+
+effMarkdown <- dccMarkdown("
+## Effect sizes
+
+The following graph shows the effect sizes of predictors. 
+
+To focus on the effect size of a single predictor, please select predictor on the left-hand side dropbox.
+
+")
+
 # assign sidebar and main div to variables
 ## sidebar
 analysis_sidebar <- htmlDiv(
-  list(htmlLabel('Linear model'),
-       htmlBr(),
+  list(htmlH3('Linear model'),
        htmlLabel('Select variable'),
        lm_variableDropdown,
        htmlBr(),
        htmlLabel('Select intensity'),
        lm_intensityDropdown,
        htmlBr(),
-       htmlLabel('Effect size'),
        htmlBr(),
+       htmlH3('Effect size'),
        htmlLabel('Select predictor'),
        htmlBr(),
        eff_predictorDropdown,
@@ -144,10 +167,12 @@ analysis_sidebar <- htmlDiv(
 
 ## maindiv
 analysis_maindiv <- htmlDiv(
-  list(htmlLabel('Linear model'),
+  list(lmMarkdown,
        lm_graph,
        htmlBr(),
-       htmlLabel('Effect sizes'),
+       htmlBr(),
+       effMarkdown,
+       htmlBr(),
        effSize_graph
   ),
   style = list('padding' = 10,
