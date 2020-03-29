@@ -45,18 +45,18 @@ dropdown_list <- dccDropdown(
 
 slider <- dccSlider(
   id = 'map_slider',
-  min = 0,
-  max = 60,
+  min = 1,
+  max = 61,
   marks = list(
-    "0" = list('label' = as.Date(1, origin = "2019-08-10")),
-    "10" = list('label' = as.Date(11, origin = "2019-08-10")),
-    "20" = list('label' = as.Date(21, origin = "2019-08-10")),
-    "30" = list('label' = as.Date(31, origin = "2019-08-10")),
-    "40" = list('label' = as.Date(41, origin = "2019-08-10")),
-    "50" = list('label' = as.Date(51, origin = "2019-08-10")),
-    "60" = list('label' = as.Date(61, origin = "2019-08-10"))
+    "1" = list('label' = as.Date(1, origin = "2019-08-10")),
+    "11" = list('label' = as.Date(11, origin = "2019-08-10")),
+    "21" = list('label' = as.Date(21, origin = "2019-08-10")),
+    "31" = list('label' = as.Date(31, origin = "2019-08-10")),
+    "41" = list('label' = as.Date(41, origin = "2019-08-10")),
+    "51" = list('label' = as.Date(51, origin = "2019-08-10")),
+    "61" = list('label' = as.Date(61, origin = "2019-08-10"))
   ),
-  value = 0
+  value = 1
 )
 
 

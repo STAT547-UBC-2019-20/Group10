@@ -89,8 +89,7 @@ app$callback(
   output(id = 'slider_label', property = 'children'),
   params = list(input(id = 'map_slider', property = 'value')),
   function (slider_value) {
-    select_date <- date_data %>% slice(input_date)
-    sprintf("Date: %f", slider_value)
+    sprintf('Date: %s', as.Date(slider_value, origin = "2019-08-10"))
   }
 )
 
