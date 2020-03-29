@@ -1,5 +1,6 @@
 library(tidyverse)
 library(plotly)
+library(effects)
 
 # load the data from which graphs are to be plotted
 cleanData <- read_csv(here::here("data", "cleaned_data.csv")) %>% mutate(is_day = factor(is_day))
@@ -23,20 +24,39 @@ lmPlot <- function(predictor = "scan", intensity = "brightness"){
 ## effect sizes plotting
 ### parameters : all, scan, track, is_day
 ### int : brightness, bright_t31,frp
-#### TODO
-effPlot <- function(predictor = "scan", intensity = "brightness"){
-  g <- ggplot(data = cleanData, aes(x=predictor, y=intensity, colour=is_day)) + 
-    geom_smooth(method="lm") +
-    ggtitle(paste0('The linear model of ', predictor, ' and ', intensity, ' by day/night')) +
-    theme(plot.title = element_text(hjust = 0.5, size = 16), 
-          axis.title=element_text(size=15),
-          legend.title = element_text(size=15))
+effPlot <- function(predictor = "all", intensity = "brightness"){
+  f <- as.formula(paste(intensity, 
+                        paste(c("scan", "track", "is_day"), collapse = " + "),
+                        sep = " ~ "))
   
-  ggplotly(g) %>%
-    layout(clickmode = 'event+select')
+  effmodel <- lm(f, data = cleanData)
+  
+  dfEffModel <- as.data.frame(allEffects(effmodel))
+  
+  if (predictor != "all") {
+    dfEffModel <- dfEffModel[[predictor]]
+  }
+  
+  plots <- lapply(dfEffModel, function(df) {
+    if (nrow(df) == 2) { # nrow == 2 then categorical predictor
+      g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2], ymin = "lower", ymax = "upper")) +
+        geom_point() +
+        geom_errorbar()
+      ggplotly(g)
+    } else {
+      g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2])) +
+        geom_line() +
+        geom_ribbon(aes(ymin = lower, ymax = upper), alpha = .1)
+      ggplotly(g)
+      
+    }
+    })
+  
+  subplot(plots)
 }
 
 # create dropdowns
+## for linear regression
 lm_variableDropdown <- dccDropdown(
   id = "lm_variable",
   options=list(
@@ -57,6 +77,29 @@ lm_intensityDropdown <- dccDropdown(
   value="brightness"
 )
 
+## for effect sizes
+eff_predictorDropdown <- dccDropdown(
+  id = "eff_predictor",
+  options=list(
+    list(label = "All", value = "all"),
+    list(label = "Day/Night", value = "is_day"),
+    list(label = "Scan", value = "scan"),
+    list(label = "Track", value = "track")
+  ),
+  value="all"
+)
+
+eff_intensityDropdown <- dccDropdown(
+  id = "eff_int",
+  options=list(
+    # brightness, bright_t31,frp
+    list(label = "Brightness in Kelvin", value = "brightness"),
+    list(label = "Channel 31 brightness temperature (Kelvin)", value = "bright_t31"),
+    list(label = "Fire Radiative Power (megawatts)", value = "frp")
+  ),
+  value="brightness"
+)
+
 
 # assign graph components to variables
 lm_graph <- dccGraph(
@@ -66,25 +109,28 @@ lm_graph <- dccGraph(
 
 effSize_graph<- dccGraph(
   id = 'effsize-graph',
-  figure = lmPlot()
+  figure = effPlot()
 )
 
 # assign sidebar and main div to variables
 ## sidebar
 analysis_sidebar <- htmlDiv(
   list(htmlLabel('Linear model'),
+       htmlBr(),
        htmlLabel('Select variable'),
        lm_variableDropdown,
        htmlBr(),
        htmlLabel('Select intensity'),
-       lm_intensityDropdown
-       # htmlLabel('Select intensity: '),
-       # htmlLabel('Linear model'),
-       # htmlBr(),
-       # yaxisDropdown,
-       # htmlLabel('Select variable: '),
-       # htmlBr()
-       
+       lm_intensityDropdown,
+       htmlBr(),
+       htmlLabel('Effect size'),
+       htmlBr(),
+       htmlLabel('Select predictor'),
+       htmlBr(),
+       eff_predictorDropdown,
+       htmlBr(),
+       htmlLabel('Select intensity'),
+       eff_intensityDropdown
   ),
   style = list('padding' = 10,
                'flex-basis' = '20%')

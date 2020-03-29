@@ -92,5 +92,14 @@ app$callback(
   }
 )
 
+# Update effect size graphs
+app$callback(
+  output(id = 'effsize-graph', property = 'figure'),
+  params = list(input(id = 'eff_predictor', property = 'value'),
+                input(id = 'eff_int', property = 'value')),
+  function(predictor, intensity){
+    effPlot(predictor, intensity)
+  }
+)
 # 4. Run app
 app$run_server(debug = TRUE)
