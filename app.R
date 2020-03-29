@@ -15,17 +15,10 @@ suppressPackageStartupMessages(library(tidyverse))
 
 ## Functions and Tabs
 source(here::here("scripts", "dash_analysisTab.R"))
+source(here::here("scripts", "dash_mapTab.R"))
 
 ## Assign components to variables
 heading_title <- htmlH1('Austrilia Wildfire Analysis')
-
-dropdown_list <- dccDropdown(
-  options=list(
-    list(label = "Day", value = "Day"),
-    list(label = "Night", value = "Night")
-  ),
-  value = "Day"
-)
 
 ## Specify layout elements
 div_header <- htmlDiv(
@@ -71,10 +64,9 @@ app$callback(
   params = list(input('tabs', 'value')),
   function(tab){
      if(tab == 'tab-1'){
-       return(htmlDiv(list(
-         htmlImg(src = "https://github.com/STAT547-UBC-2019-20/Group10/raw/master/images/geogram.png", 
-                 style=list( "max-width" = "80%", height = "auto", "margin-left" = "auto", "margin-right" = "auto", display = "block"))
-       )))}
+       return(htmlDiv(
+         tab_map
+       ))}
      else if(tab == 'tab-2'){
        return(htmlDiv(
          tab_analysis
@@ -91,6 +83,26 @@ app$callback(
     lmPlot(predictor, intensity)
   }
 )
+
+# Update the slider for map
+app$callback(
+  output(id = 'slider_label', property = 'children'),
+  params = list(input(id = 'map_slider', property = 'value')),
+  function (slider_value) {
+    select_date <- date_data %>% slice(input_date)
+    sprintf("Date: %f", slider_value)
+  }
+)
+
+app$callback(
+  output(id = 'map_graph_by_date', property = 'figure'),
+  params = list(input(id = 'map_slider', property = 'value')),
+  function(input_date){
+    select_date <- date_data %>% slice(input_date)
+    make_plot(select_date)
+  }
+)
+
 
 # 4. Run app
 app$run_server(debug = TRUE)
