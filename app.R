@@ -84,7 +84,6 @@ app$callback(
   }
 )
 
-<<<<<<< HEAD
 # Update the slider for map
 app$callback(
   output(id = 'slider_label', property = 'children'),
@@ -103,8 +102,6 @@ app$callback(
   }
 )
 
-
-=======
 # Update effect size graphs
 app$callback(
   output(id = 'effsize-graph', property = 'figure'),
@@ -114,6 +111,6 @@ app$callback(
     effPlot(predictor, intensity)
   }
 )
->>>>>>> upstream/master
+
 # 4. Run app
 app$run_server(debug = TRUE)
