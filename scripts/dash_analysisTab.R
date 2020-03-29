@@ -24,6 +24,22 @@ lmPlot <- function(predictor = "scan", intensity = "brightness"){
 ## effect sizes plotting
 ### parameters : all, scan, track, is_day
 ### int : brightness, bright_t31,frp
+effectsizegraph <- function(df, intensity){
+  if (nrow(df) == 2) { # nrow == 2 then categorical predictor
+    g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2], ymin = "lower", ymax = "upper")) +
+      geom_point() +
+      geom_errorbar() +
+      labs(title = paste0("The effect size of Day/Night on ", intensity), y = intensity)
+  } 
+  else {
+    g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2])) +
+      geom_line() +
+      geom_ribbon(aes(ymin = lower, ymax = upper), alpha = .1) +
+      labs(title = paste0("The effect size of ", colnames(df)[1]," on ", intensity), y = intensity)
+    
+  }
+  return(g)
+}
 effPlot <- function(predictor = "all", intensity = "brightness"){
   f <- as.formula(paste(intensity, 
                         paste(c("scan", "track", "is_day"), collapse = " + "),
@@ -35,33 +51,13 @@ effPlot <- function(predictor = "all", intensity = "brightness"){
   
   if (predictor == "all") {
     plots <- lapply(dfEffModel, function(df) {
-      if (nrow(df) == 2) { # nrow == 2 then categorical predictor
-        g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2], ymin = "lower", ymax = "upper")) +
-          geom_point() +
-          geom_errorbar()
+        g <- effectsizegraph(df, intensity) + ggtitle(paste0("All effect sizes on ", intensity)) 
         ggplotly(g)
-        } else {
-        g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2])) +
-          geom_line() +
-          geom_ribbon(aes(ymin = lower, ymax = upper), alpha = .1)
-        ggplotly(g)
-        }
     })
-    subplot(plots)
+    subplot(plots, titleX = TRUE)
     } else { 
     df <- dfEffModel[[predictor]]
-    if (nrow(df) == 2) { # nrow == 2 then categorical predictor
-      g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2], ymin = "lower", ymax = "upper")) +
-        geom_point() +
-        geom_errorbar()
-      ggplotly(g)
-    } 
-    else {
-      g <- ggplot(df, aes_string(x = colnames(df)[1], y = colnames(df)[2])) +
-        geom_line() +
-        geom_ribbon(aes(ymin = lower, ymax = upper), alpha = .1)
-      ggplotly(g)
-    }
+    effectsizegraph(df, intensity) %>% ggplotly()
   }
 }
 
