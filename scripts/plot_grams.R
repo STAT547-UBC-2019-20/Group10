@@ -18,6 +18,7 @@ main <- function (data_path) {
   message(paste0("Drawing the correlogram and geometric diagram from: ", data_path))
   plot_correllogram (data_path)
   plot_geogram (data_path)
+ # plot_box (data_path)
   message(paste0("Successful! Both grams have been saved in folder images/"))
 }
 
@@ -61,11 +62,11 @@ plot_correllogram <- function (data_path) {
 plot_geogram <- function (data_path) {
   
   wildfire_data <- read_csv(data_path)
-  Map_data <- wildfire_data %>%
+  map_data <- wildfire_data %>%
     select(latitude, longitude, frp, brightness) 
   
   ggplot() + 
-    geom_point(data=Map_data,aes(x=longitude,y=latitude, size = frp, color=brightness), alpha = 0.5) +
+    geom_point(data=map_data,aes(x=longitude,y=latitude, size = frp, color=brightness), alpha = 0.5) +
     xlab ("Longitude, degree(East as positive)") +
     ylab ("Latitude, degree(North as positive)") +
     ggtitle('Brightness and Radiation Power vs. Geometric info') +
@@ -73,5 +74,20 @@ plot_geogram <- function (data_path) {
     ggsave('images/geogram.png', width = 8, height = 5)
   
 }
+
+#' TBD: make a box plot if have time
+#' 
+#' @param data_path is a string. The path to the wranggled and cleaned data
+#' @examples
+#' plot_box ('data/fire_archive_M6_96619.csv')
+# plot_box <- function (data_path) {
+#   wildfire_data <- read_csv(data_path)
+#   box_data <- wildfire_data %>%
+#     select(brightness, frp, confidence)
+#   ggplot(box_data, aes(x = brightness, y = frp )) +
+#     geom_boxplot()+
+#     scale_x_discrete(limits=c("0", "1")) +
+#     ggsave('images/boxplot.png', width = 8, height = 5)
+# }
 
 main(opt$data_path)  
