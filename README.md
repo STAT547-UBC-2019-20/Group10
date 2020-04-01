@@ -19,6 +19,8 @@ To replicate this analysis, clone this repo and navigate to the root folder of t
 - testthat
 - corrplot
 - effects
+- maps
+- mitools
 
     and then type in the following commands:
    
