@@ -19,14 +19,16 @@ source(here::here("scripts", "dash_mapTab.R"))
 
 ## Assign components to variables
 heading_title <- htmlH1('Austrilia Wildfire Analysis')
+heading_subtitle <- htmlH2('Observe satellite data interactively')
 
 ## Specify layout elements
 div_header <- htmlDiv(
   list(
-    heading_title
+    heading_title,
+    heading_subtitle
   ),
   style = list(
-    backgroundColor = '#008420', 
+    backgroundColor = '#8691F2', 
     textAlign = 'center',
     color = 'white',
     margin = 5,

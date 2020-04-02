@@ -1,3 +1,4 @@
+
 # Load data 
 Data <- read_csv(here::here("data", "fire_archive_M6_96619.csv"))
 date_data <- Data %>%
@@ -17,12 +18,16 @@ make_plot <- function(input_date = first_date){
   select_data <- select_data %>% select(-acq_date)
   
   # make the plot!
-
+  world <- map_data("world", region = "Australia")
+  
   p <- ggplot() +
-    geom_point(data=select_data,aes(x=longitude,y=latitude, size = frp, color=brightness), alpha = 0.5) +
+    geom_polygon(world, mapping = aes(x=long,y=lat,group = group, fill = 5), alpha = 0.3) +
+    scale_fill_continuous(guide = FALSE) +
+    geom_point(select_data,mapping = aes(x=longitude,y=latitude, size = frp, color=brightness), alpha = 0.5) +
     xlab ("Longitude, degree(East as positive)") +
     ylab ("Latitude, degree(North as positive)") +
     ggtitle('Brightness and Radiation Power vs. Geometric info') +
+    geom_polygon(fill="lightgray", colour = "white")+
     theme(plot.title = element_text(hjust = 0.5, size = 14), legend.title = element_text(size=12))
 
   ggplotly(p)
