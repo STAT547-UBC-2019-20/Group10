@@ -1,0 +1,9 @@
+{
+  "name": "Deploy the dashR for STAT 547 group 10 to heroku",
+  "description": "This app analyze the wildfire in Austrilia",
+  "keywords": [
+    "heroku",
+    "R deployment",
+    "Dash R"
+],
+}
