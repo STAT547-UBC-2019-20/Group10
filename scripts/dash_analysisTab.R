@@ -37,6 +37,11 @@ effectsizegraph <- function(df, intensity){
       geom_point() +
       geom_errorbar() +
       labs(title = paste0("The effect size of Day/Night on ", intensity), y = intensity) +
+      if (intensity == "frp") {
+        labs(y = "Fire Radiative Power (MW)")
+      } else {
+        labs(y = paste0(intensity," (K)"))
+      }
       theme(plot.title = element_text(hjust = 0.5, size = 16), 
             axis.title=element_text(size=15))
   } 
@@ -47,10 +52,11 @@ effectsizegraph <- function(df, intensity){
       labs(title = paste0("The effect size of ", colnames(df)[1]," on ", intensity), y = intensity) +
       theme(plot.title = element_text(hjust = 0.5, size = 16), 
             axis.title=element_text(size=15))
-    
   }
   return(g)
 }
+
+
 effPlot <- function(predictor = "all", intensity = "brightness"){
   f <- as.formula(paste(intensity, 
                         paste(c("scan", "track", "is_day"), collapse = " + "),
@@ -65,7 +71,15 @@ effPlot <- function(predictor = "all", intensity = "brightness"){
       g <- effectsizegraph(df, intensity) + ggtitle(paste0("All effect sizes on ", intensity)) 
       ggplotly(g)
     })
-    subplot(plots, titleX = TRUE)
+    
+    if (intensity == "frp") {
+      gross_y_lab <- "Fire Radiative Power (MW)"
+    } else {
+      gross_y_lab <- paste0(intensity," (K)")
+    }
+    
+    subplot(plots, titleX = TRUE) %>% layout(yaxis = list(title = gross_y_lab))
+    
   } else { 
     df <- dfEffModel[[predictor]]
     effectsizegraph(df, intensity) %>% ggplotly()
