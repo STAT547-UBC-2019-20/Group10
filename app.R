@@ -36,6 +36,45 @@ div_header <- htmlDiv(
   )
 )
 
+div_side <- htmlDiv(
+  list(
+    dccMarkdown("
+    **Use this app to get insight from Australian wildfire**
+    
+    **Two tabs: Map and Analysis. You can plot interactively on both.**
+    
+    'Map' is for the temporal development and overall status of the fires.
+    Specify a certain date using the slide bar, or select 'All' from the dropdown to 
+    plot the overall status.
+    
+    'Analysis' is for linear regression analysis with different predictors.
+    You can plot a linear model and see the effect sizes of each factor there. 
+    In the 'linear model' section, a linear model will be plotted as you select 
+    variables and intensity.
+    On the 'effect size' section, a graph (or set of them) will show you the effect 
+    size of each factor. Select the predictor and intensity variable of your interest. 
+    
+    **Here is a brief description of the variables**
+    
+    Two types of variables in this dataset are observatory and intensity variables.
+    'Scan', 'Track', and 'is_day' are observatory variables specifying the information 
+    about an observation of fire from the satellite.
+    
+    'Scan' and 'Track' are for the specification of the satellite, and 'is_day' is about
+    the time of the day when the observation occurred. (whether during the day or not)
+    
+    There are three intensity variables. 
+    'Brightness' is the brightness of the fire core, measured in Kelvin.
+    'Brightness_t31' is the channel 31 brightness temperature, also measured in Kelvin.
+    'Frp' is for Fire Raditive Power, a representation of the fire intensity in MW.
+    I hope you have fun. :)
+    [Data source](https://www.kaggle.com/carlosparadis/fires-from-space-australia-and-new-zeland)"),
+    htmlBr()
+  ), style = list('background-color'='lightgrey', 
+                  'columnCount'=1, 
+                  'white-space'='pre-line')
+)
+
 div_tabs <- htmlDiv(
   list(
   dccTabs(id="tabs", value='tab-1', children=list(
@@ -50,12 +89,25 @@ app <- Dash$new()
 
 # 3. Specify App layout
 app$layout(
+  
   htmlDiv(
     list(
+      # title bar
       div_header,
-      div_tabs
+      
+      # under the title bar -- contain side bar (description and data source), and main bar (two tabs)
+      htmlDiv(
+        list(
+          # Side bar
+          div_side,
+          # main bar -- the two tabs
+          div_tabs
+        ), style=list('display'='flex')
+      )
     )
   )
+  
+  
 )
 
 ## App Callbacks
@@ -143,6 +195,6 @@ app$callback(
 )
 
 # 4. Run app, change for deploy online
-app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) 
+app$run_server() #host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) 
 
 #app$run_server(debug = TRUE)
