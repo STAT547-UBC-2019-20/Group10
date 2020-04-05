@@ -7,6 +7,8 @@ Here are the links for each milestone
 * [Final Report](https://stat547-ubc-2019-20.github.io/Group10/docs/finalReport.html)
 * [Final Report.pdf](https://stat547-ubc-2019-20.github.io/Group10/docs/finalReport.pdf)
 
+Here is the link for the deployed app on Heroku: 
+[Austalia Wildfire Analysis](https://australia-wildfire-analysis.herokuapp.com/)
 
 ## Usage
 
@@ -21,6 +23,7 @@ To replicate this analysis, clone this repo and navigate to the root folder of t
 - effects
 - maps
 - mitools
+- here
 
     and then type in the following commands:
    
