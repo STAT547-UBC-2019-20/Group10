@@ -19,7 +19,7 @@ source(here::here("scripts", "dash_mapTab.R"))
 
 ## Assign components to variables
 heading_title <- htmlH1('Austrilia Wildfire Analysis')
-heading_subtitle <- htmlH2('Observe satellite data interactively')
+heading_subtitle <- htmlH2('Observe satellite data for wildfire interactively')
 
 ## Specify layout elements
 div_header <- htmlDiv(
@@ -179,8 +179,8 @@ app$callback(
         list(
           htmlH2('Fire on each day on map'),
           map_markdown,
-          htmlH4(id = 'slider_label'),
           graph,
+          htmlH4(id = 'slider_label'),
           slider
         ))
       )
@@ -188,6 +188,7 @@ app$callback(
       return(htmlDiv(
         list(
           htmlH2('Fire over all time'),
+          map_markdown,          
           htmlImg(src = "https://github.com/STAT547-UBC-2019-20/Group10/raw/master/images/geogram.png",
                  style=list( "max-width" = "80%", height = "auto", "margin-left" = "auto", "margin-right" = "auto", display = "block"))
         )
@@ -218,5 +219,6 @@ app$callback(
 
 # 4. Run app, change for deploy online
 #app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
+
 
 app$run_server(debug = TRUE)
