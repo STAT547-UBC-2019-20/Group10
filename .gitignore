@@ -19,6 +19,7 @@
 
 # RStudio files
 .Rproj.user/
+Group10.Rproj
 
 # produced vignettes
 vignettes/*.html
