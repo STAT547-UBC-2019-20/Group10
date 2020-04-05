@@ -134,18 +134,40 @@ app$callback(
   output(id = 'slider_label', property = 'children'),
   params = list(input(id = 'map_slider', property = 'value')),
   function (slider_value) {
-    sprintf('Date: %s', as.Date(slider_value, origin = "2019-08-10"))
+    start_point <- as.integer(slider_value[1])
+    end_point <- as.integer(slider_value[2])
+    sprintf('Date Range: %s to %s', as.Date(start_point, origin = "2019-08-10"), as.Date(end_point, origin = "2019-08-10"))
   }
 )
 
 app$callback(
   output(id = 'map_graph_by_date', property = 'figure'),
   params = list(input(id = 'map_slider', property = 'value')),
-  function(input_date){
-    select_date <- date_data %>% slice(input_date)
+  function (slider_value) {
+    start_point <- as.integer(slider_value[1])
+    end_point <- as.integer(slider_value[2])
+    select_date <- date_data %>% slice(start_point:end_point)
     make_plot(select_date)
   }
 )
+
+
+# app$callback(
+#   output(id = 'slider_label', property = 'children'),
+#   params = list(input(id = 'map_slider', property = 'value')),
+#   function (slider_value) {
+#     sprintf('Date: %s', as.Date(slider_value, origin = "2019-08-10"))
+#   }
+# )
+# 
+# app$callback(
+#   output(id = 'map_graph_by_date', property = 'figure'),
+#   params = list(input(id = 'map_slider', property = 'value')),
+#   function(input_date){
+#     select_date <- date_data %>% slice(input_date)
+#     make_plot(select_date)
+#   }
+# )
 
 # Updte the map between all and sliding
 app$callback(
@@ -195,6 +217,6 @@ app$callback(
 )
 
 # 4. Run app, change for deploy online
-app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
+#app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
 
-#app$run_server(debug = TRUE)
+app$run_server(debug = TRUE)
