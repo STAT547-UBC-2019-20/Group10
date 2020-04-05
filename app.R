@@ -106,8 +106,6 @@ app$layout(
       )
     )
   )
-  
-  
 )
 
 ## App Callbacks
@@ -142,47 +140,37 @@ app$callback(
 
 app$callback(
   output(id = 'map_graph_by_date', property = 'figure'),
-  params = list(input(id = 'map_slider', property = 'value')),
-  function (slider_value) {
+  params = list(input(id = 'map_slider', property = 'value'),
+                input(id = 'map_brightness_frp', property = 'value')),
+  function (slider_value, frp_brightness) {
     start_point <- as.integer(slider_value[1])
     end_point <- as.integer(slider_value[2])
     select_date <- date_data %>% slice(start_point:end_point)
-    make_plot(select_date)
+    make_plot(select_date, frp_brightness)
   }
 )
 
 
-# app$callback(
-#   output(id = 'slider_label', property = 'children'),
-#   params = list(input(id = 'map_slider', property = 'value')),
-#   function (slider_value) {
-#     sprintf('Date: %s', as.Date(slider_value, origin = "2019-08-10"))
-#   }
-# )
-# 
-# app$callback(
-#   output(id = 'map_graph_by_date', property = 'figure'),
-#   params = list(input(id = 'map_slider', property = 'value')),
-#   function(input_date){
-#     select_date <- date_data %>% slice(input_date)
-#     make_plot(select_date)
-#   }
-# )
-
 # Updte the map between all and sliding
 app$callback(
   output(id = 'map_maindiv', property = 'children'),
-  params = list(input(id = 'map_dropdown', property = 'value')),
+  params = list(input(id = 'map_date_all', property = 'value')),
   function (dropdown_value) {
     if (dropdown_value == '1'){
       return(htmlDiv(
         list(
+          # Show the map by date by default
           htmlH2('Fire on each day on map'),
           map_markdown,
+          htmlH4('Select to show:'),
+          brightness_frp_list,
           graph,
           htmlH4(id = 'slider_label'),
           slider
-        ))
+        ),
+        style = list('padding' = 10,
+                     'flex-basis' = '80%',
+                     'justify-content' = 'center'))
       )
     } else if (dropdown_value == '2'){
       return(htmlDiv(
@@ -196,6 +184,8 @@ app$callback(
     }
   }
 )
+
+
 
 # Update analysis graphs
 app$callback(
@@ -218,7 +208,6 @@ app$callback(
 )
 
 # 4. Run app, change for deploy online
-#app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
+app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
 
-
-app$run_server(debug = TRUE)
+#app$run_server(debug = TRUE)
