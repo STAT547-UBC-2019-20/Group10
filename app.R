@@ -19,7 +19,7 @@ source(here::here("scripts", "dash_mapTab.R"))
 
 ## Assign components to variables
 heading_title <- htmlH1('Austrilia Wildfire Analysis')
-heading_subtitle <- htmlH2('Observe satellite data interactively')
+heading_subtitle <- htmlH2('Observe satellite data for wildfire interactively')
 
 ## Specify layout elements
 div_header <- htmlDiv(
@@ -134,18 +134,40 @@ app$callback(
   output(id = 'slider_label', property = 'children'),
   params = list(input(id = 'map_slider', property = 'value')),
   function (slider_value) {
-    sprintf('Date: %s', as.Date(slider_value, origin = "2019-08-10"))
+    start_point <- as.integer(slider_value[1])
+    end_point <- as.integer(slider_value[2])
+    sprintf('Date Range: %s to %s', as.Date(start_point, origin = "2019-08-10"), as.Date(end_point, origin = "2019-08-10"))
   }
 )
 
 app$callback(
   output(id = 'map_graph_by_date', property = 'figure'),
   params = list(input(id = 'map_slider', property = 'value')),
-  function(input_date){
-    select_date <- date_data %>% slice(input_date)
+  function (slider_value) {
+    start_point <- as.integer(slider_value[1])
+    end_point <- as.integer(slider_value[2])
+    select_date <- date_data %>% slice(start_point:end_point)
     make_plot(select_date)
   }
 )
+
+
+# app$callback(
+#   output(id = 'slider_label', property = 'children'),
+#   params = list(input(id = 'map_slider', property = 'value')),
+#   function (slider_value) {
+#     sprintf('Date: %s', as.Date(slider_value, origin = "2019-08-10"))
+#   }
+# )
+# 
+# app$callback(
+#   output(id = 'map_graph_by_date', property = 'figure'),
+#   params = list(input(id = 'map_slider', property = 'value')),
+#   function(input_date){
+#     select_date <- date_data %>% slice(input_date)
+#     make_plot(select_date)
+#   }
+# )
 
 # Updte the map between all and sliding
 app$callback(
@@ -157,8 +179,8 @@ app$callback(
         list(
           htmlH2('Fire on each day on map'),
           map_markdown,
-          htmlH4(id = 'slider_label'),
           graph,
+          htmlH4(id = 'slider_label'),
           slider
         ))
       )
@@ -166,6 +188,7 @@ app$callback(
       return(htmlDiv(
         list(
           htmlH2('Fire over all time'),
+          map_markdown,          
           htmlImg(src = "https://github.com/STAT547-UBC-2019-20/Group10/raw/master/images/geogram.png",
                  style=list( "max-width" = "80%", height = "auto", "margin-left" = "auto", "margin-right" = "auto", display = "block"))
         )
@@ -195,6 +218,7 @@ app$callback(
 )
 
 # 4. Run app, change for deploy online
-app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) 
+#app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
 
-#app$run_server(debug = TRUE)
+
+app$run_server(debug = TRUE)
