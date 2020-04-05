@@ -19,7 +19,7 @@ source(here::here("scripts", "dash_mapTab.R"))
 
 ## Assign components to variables
 heading_title <- htmlH1('Austrilia Wildfire Analysis')
-heading_subtitle <- htmlH2('Observe satellite data interactively')
+heading_subtitle <- htmlH2('Observe satellite data for wildfire interactively')
 
 ## Specify layout elements
 div_header <- htmlDiv(
@@ -106,8 +106,6 @@ app$layout(
       )
     )
   )
-  
-  
 )
 
 ## App Callbacks
@@ -134,38 +132,51 @@ app$callback(
   output(id = 'slider_label', property = 'children'),
   params = list(input(id = 'map_slider', property = 'value')),
   function (slider_value) {
-    sprintf('Date: %s', as.Date(slider_value, origin = "2019-08-10"))
+    start_point <- as.integer(slider_value[1])
+    end_point <- as.integer(slider_value[2])
+    sprintf('Date Range: %s to %s', as.Date(start_point, origin = "2019-08-10"), as.Date(end_point, origin = "2019-08-10"))
   }
 )
 
 app$callback(
   output(id = 'map_graph_by_date', property = 'figure'),
-  params = list(input(id = 'map_slider', property = 'value')),
-  function(input_date){
-    select_date <- date_data %>% slice(input_date)
-    make_plot(select_date)
+  params = list(input(id = 'map_slider', property = 'value'),
+                input(id = 'map_brightness_frp', property = 'value')),
+  function (slider_value, frp_brightness) {
+    start_point <- as.integer(slider_value[1])
+    end_point <- as.integer(slider_value[2])
+    select_date <- date_data %>% slice(start_point:end_point)
+    make_plot(select_date, frp_brightness)
   }
 )
+
 
 # Updte the map between all and sliding
 app$callback(
   output(id = 'map_maindiv', property = 'children'),
-  params = list(input(id = 'map_dropdown', property = 'value')),
+  params = list(input(id = 'map_date_all', property = 'value')),
   function (dropdown_value) {
     if (dropdown_value == '1'){
       return(htmlDiv(
         list(
+          # Show the map by date by default
           htmlH2('Fire on each day on map'),
           map_markdown,
-          htmlH4(id = 'slider_label'),
+          htmlH4('Select to show:'),
+          brightness_frp_list,
           graph,
+          htmlH4(id = 'slider_label'),
           slider
-        ))
+        ),
+        style = list('padding' = 10,
+                     'flex-basis' = '80%',
+                     'justify-content' = 'center'))
       )
     } else if (dropdown_value == '2'){
       return(htmlDiv(
         list(
           htmlH2('Fire over all time'),
+          map_markdown,          
           htmlImg(src = "https://github.com/STAT547-UBC-2019-20/Group10/raw/master/images/geogram.png",
                  style=list( "max-width" = "80%", height = "auto", "margin-left" = "auto", "margin-right" = "auto", display = "block"))
         )
@@ -173,6 +184,8 @@ app$callback(
     }
   }
 )
+
+
 
 # Update analysis graphs
 app$callback(
